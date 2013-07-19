@@ -38,6 +38,7 @@ set( LIBRARY_NAMES
   knMotorSvcs
   knMrsImpl          
   knNavigation       
+  knOldMath
   knPicMotorGroup    
   knPoseEstimation
   knPoseSensing

@@ -17,7 +17,6 @@ set( KNALGO_LIBRARY_DIR ${KNALGO_ROOT_DIR}/lib )
 set( KNALGO_FOUND TRUE )
 
 set( LIBRARY_NAMES
-  knOldMath
   knArcNav
   knCoordinatedWheelLocomotion
   knDeadReckoning
