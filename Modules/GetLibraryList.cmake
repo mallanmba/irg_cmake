@@ -155,6 +155,9 @@ macro( get_library_imports  PKG_NAME LIBRARY_DIR LIBRARY_NAMES )
         set( ${PKG_PREFIX}_${LIBRARY_NAME}_LIBRARY ${LIBRARY_NAME} )
         set( ${PKG_PREFIX}_LIBRARIES ${${PKG_PREFIX}_LIBRARIES} ${LIBRARY_NAME} )
       endif( ${PKG_PREFIX}_${LIBRARY_NAME}_LIBRARY )
+      
+      #message(STATUS "  -- check ${PKG_PREFIX}_${LIBRARY_NAME}_LIBRARY = ${${PKG_PREFIX}_${LIBRARY_NAME}_LIBRARY}")
+      
     endforeach(  LIBRARY_NAME  ${LIBRARY_NAMES} ) 
     
   else(EXISTS ${DEPEND_FILE} )

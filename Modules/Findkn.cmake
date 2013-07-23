@@ -22,5 +22,6 @@ set( LIBRARY_NAMES
   knMotorShare
 )
 get_library_list(KN ${KN_LIBRARY_DIR} "d" "${LIBRARY_NAMES}")
+get_library_imports(kn ${KN_LIBRARY_DIR} "${LIBRARY_NAMES}")
 
 set( KN_FOUND TRUE )
