@@ -7,31 +7,31 @@
 # RASM_INCLUDE_DIR     : include path
 # RASM_LIBRARIES       : all libraries in one variable (use this in your CMakeLists)
 # RASM_LIBRARY_DIR     : library path
-# RASM_BASE_LIBRARY    : full path to proj
+# RASM_common_LIBRARY  : full path to rasm common library
 #
 ######################################################################
 
-include( IrgPackageFind )
+include( SimplePackageFind )
 
-set(     PACKAGE rasm )
-set( PACKAGE_DIR rasm )
-set(    BASE_LIB common )
+set( PACKAGE_NAME         rasm )
+set( PACKAGE_DIRS         rasm )
+set( PACKAGE_REQ_LIBRARY  common )
+set( PACKAGE_REQ_INCLUDE  rasm_common_types.h )
 
-
-irg_package_find( "${PACKAGE}" "${PACKAGE_DIR}" "${BASE_LIB}")
+simple_package_find("${PACKAGE_NAME}" 
+                    "${PACKAGE_DIRS}" 
+                    "${PACKAGE_REQ_LIBRARY}"
+                    "${PACKAGE_REQ_INCLUDE}"
+)
 
 ##
-## If additional libraries need to be found, do
-## so here
+## find paths to package libraries
+##
 ################################################
-if( ${PACKAGE_FOUND} ) 
-
-  set( ${PACKAGE_LIBRARIES} 
-    ${${PACKAGE_BASE_LIBRARY}}
-    CACHE STRING "all ${PACKAGE} link libraries"
+if( ${PACKAGE_FOUND} )
+  set( LIBRARY_NAMES
+    common
   )
-  mark_as_advanced( 
-    ${PACKAGE_BASE_LIBRARY} 
-  )
+  get_library_list(${PACKAGE_UPPER} ${${PACKAGE_LIBRARY_DIR}} "d" "${LIBRARY_NAMES}")
 endif( ${PACKAGE_FOUND} )
 

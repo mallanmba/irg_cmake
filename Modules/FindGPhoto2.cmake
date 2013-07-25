@@ -10,48 +10,29 @@
 #
 ######################################################################
 
-include( IrgPackageFind )
-include( GetLibraryList )
+include( SimplePackageFind )
 
-set(     PACKAGE gphoto2 )
-set( PACKAGE_DIR libgphoto2 )
-set(    BASE_LIB gphoto2 )
+set( PACKAGE_NAME           gphoto2 )
+set( PACKAGE_DIRS           libgphoto2 )
+set( PACKAGE_REQ_LIBRARY    gphoto2 )
+set( PACKAGE_REQ_INCLUDE    gphoto2/gphoto2.h )
 
-irg_package_find( "${PACKAGE}" "${PACKAGE_DIR}" "${BASE_LIB}" )
+simple_package_find("${PACKAGE_NAME}" 
+                    "${PACKAGE_DIRS}" 
+                    "${PACKAGE_REQ_LIBRARY}"
+                    "${PACKAGE_REQ_INCLUDE}"
+)
 
 ##
-## If additional libraries need to be found, do
-## so here
+## find paths to package libraries
+##
 ################################################
 if( ${PACKAGE_FOUND} )
 
-  set( ${PACKAGE_LIBRARIES} 
-    ${${PACKAGE_BASE_LIBRARY}}
-    CACHE STRING "all ${PACKAGE} link libraries"
+  set( LIBRARY_NAMES
+    gphoto2
   )
-  mark_as_advanced( 
-    ${PACKAGE_BASE_LIBRARY} 
-  )
+  get_library_list(${PACKAGE_UPPER} ${${PACKAGE_LIBRARY_DIR}} "d" "${LIBRARY_NAMES}")
   
 endif( ${PACKAGE_FOUND} )
 
-
-#find_library( GPHOTO2_LIBRARY gphoto2
-#  /usr/local/irg/packages/i686_linux_gcc4.1/libgphoto2/lib
-#)
-#
-#string(REGEX REPLACE "/[^/]*/[^/]*$" "" GPHOTO2_ROOT ${GPHOTO2_LIBRARY})
-#
-#if ( GPHOTO2_ROOT )
-#
-#  set( GPHOTO2_INCLUDE_DIR ${GPHOTO2_ROOT}/include CACHE PATH "gphoto2 include path")
-#  
-#  message(STATUS "gphoto2 root found at ${GPHOTO2_ROOT}")
-#
-#  set( GPHOTO2_FOUND TRUE )
-#
-#else( GPHOTO2_ROOT )
-#
-#  message(STATUS "gphoto2 root NOT found.")
-#  
-#endif( GPHOTO2_ROOT )

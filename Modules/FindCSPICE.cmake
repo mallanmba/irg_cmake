@@ -26,8 +26,8 @@ simple_package_find("${PACKAGE_NAME}"
 )
 
 ##
-## If additional libraries need to be found, do
-## so here
+## find paths to package libraries
+##
 ################################################
 
 if( ${PACKAGE_FOUND} )

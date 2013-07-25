@@ -16,22 +16,26 @@
 #
 ######################################################################
 
-include( IrgPackageFind )
-include( GetLibraryList )
+include( SimplePackageFind )
 
-set(     PACKAGE Coin3D )
-set( PACKAGE_DIR coin3d )
-set(    BASE_LIB Coin )
+set( PACKAGE_NAME           Coin3D )
+set( PACKAGE_DIRS           coin3d )
+set( PACKAGE_REQ_LIBRARY    Coin )
+set( PACKAGE_REQ_INCLUDE    Inventor/So.h )
 
 if(WIN32)
-  set( BASE_LIB coin3 )
+  set( PACKAGE_REQ_LIBRARY coin3 )
 endif(WIN32)
 
-irg_package_find( "${PACKAGE}" "${PACKAGE_DIR}" "${BASE_LIB}")
+simple_package_find("${PACKAGE_NAME}" 
+                    "${PACKAGE_DIRS}" 
+                    "${PACKAGE_REQ_LIBRARY}"
+                    "${PACKAGE_REQ_INCLUDE}"
+)
 
 ##
-## If additional libraries need to be found, do
-## so here
+## find paths to package libraries
+##
 ################################################
 if( ${PACKAGE_FOUND} ) 
   

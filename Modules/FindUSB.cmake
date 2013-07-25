@@ -7,31 +7,32 @@
 # USB_INCLUDE_DIR     : include path
 # USB_LIBRARIES       : libraries in one variable (use this in your CMakeLists)
 # USB_LIBRARY_DIR     : library path
-# USB_BASE_LIBRARY    : full path to usb
+# USB_usb_LIBRARY    : full path to usb
 #
 ######################################################################
 
-include( IrgPackageFind )
+include( SimplePackageFind )
 
-set(     PACKAGE usb )
-set( PACKAGE_DIR usb )
-set(    BASE_LIB usb )
+set( PACKAGE_NAME         usb )
+set( PACKAGE_DIRS         usb )
+set( PACKAGE_REQ_LIBRARY  usb )
+set( PACKAGE_REQ_INCLUDE  usb.h )
 
-irg_package_find( "${PACKAGE}" "${PACKAGE_DIR}" "${BASE_LIB}")
+simple_package_find("${PACKAGE_NAME}" 
+                    "${PACKAGE_DIRS}" 
+                    "${PACKAGE_REQ_LIBRARY}"
+                    "${PACKAGE_REQ_INCLUDE}"
+)
 
 ##
-## If additional libraries need to be found, do
-## so here
+## find paths to package libraries
+##
 ################################################
-if( ${PACKAGE_FOUND} ) 
+if( ${PACKAGE_FOUND} )
+  set( LIBRARY_NAMES
+    usb
+  )
+  get_library_list(${PACKAGE_UPPER} ${${PACKAGE_LIBRARY_DIR}} "d" "${LIBRARY_NAMES}")
+endif( ${PACKAGE_FOUND} )
 
-  set( ${PACKAGE_LIBRARIES} 
-    ${${PACKAGE_BASE_LIBRARY}}
-    CACHE STRING "all ${PACKAGE} link libraries"
-  )
-  mark_as_advanced( 
-    ${PACKAGE_BASE_LIBRARY} 
-  )
-  
-endif( ${PACKAGE_FOUND} ) 
 

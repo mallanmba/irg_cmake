@@ -7,31 +7,31 @@
 # SICKTOOLBOX_INCLUDE_DIR         : include path
 # SICKTOOLBOX_LIBRARIES           : libraries in one variable (use this in your CMakeLists)
 # SICKTOOLBOX_LIBRARY_DIR         : library path
-# SICKTOOLBOX_BASE_LIBRARY        : full path to sicktoolbox
+# SICKTOOLBOX_sicklms-1.0_LIBRARY : full path to sicklms-1.0
 #
 ######################################################################
 
-include( IrgPackageFind )
+include( SimplePackageFind )
 
-set(     PACKAGE sicktoolbox )
-set( PACKAGE_DIR sicktoolbox )
-set(    BASE_LIB sicklms-1.0 )
+set( PACKAGE_NAME         sicktoolbox )
+set( PACKAGE_DIRS         sicktoolbox )
+set( PACKAGE_REQ_LIBRARY  sicklms-1.0 )
+set( PACKAGE_REQ_INCLUDE  sicklms-1.0/SickLMS.hh )
 
-irg_package_find( "${PACKAGE}" "${PACKAGE_DIR}" "${BASE_LIB}")
+simple_package_find("${PACKAGE_NAME}" 
+                    "${PACKAGE_DIRS}" 
+                    "${PACKAGE_REQ_LIBRARY}"
+                    "${PACKAGE_REQ_INCLUDE}"
+)
 
 ##
-## If additional libraries need to be found, do
-## so here
+## find paths to package libraries
+##
 ################################################
-##
-if( ${PACKAGE_FOUND} ) 
-
-  set( ${PACKAGE_LIBRARIES} 
-    ${${PACKAGE_BASE_LIBRARY}}
-    CACHE STRING "all ${PACKAGE} link libraries"
+if( ${PACKAGE_FOUND} )
+  set( LIBRARY_NAMES
+    sicklms-1.0
   )
-  mark_as_advanced( 
-    ${PACKAGE_BASE_LIBRARY} 
-  )
+  get_library_list(${PACKAGE_UPPER} ${${PACKAGE_LIBRARY_DIR}} "d" "${LIBRARY_NAMES}")
+endif( ${PACKAGE_FOUND} )
 
-endif( ${PACKAGE_FOUND} ) 

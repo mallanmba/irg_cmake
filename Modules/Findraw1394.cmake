@@ -7,33 +7,33 @@
 # RAW1394_INCLUDE_DIR     : include path
 # RAW1394_LIBRARIES       : libraries in one variable (use this in your CMakeLists)
 # RAW1394_LIBRARY_DIR     : library path
-# RAW1394_BASE_LIBRARY    : full path to raw1394
+# RAW1394_raw1394_LIBRARY : full path to raw1394
 #
 ######################################################################
 
-include( IrgPackageFind )
+include( SimplePackageFind )
 
-set(     PACKAGE raw1394 )
-set( PACKAGE_DIR libraw1394 )
-set(    BASE_LIB raw1394 )
+set( PACKAGE_NAME         raw1394 )
+set( PACKAGE_DIRS         libraw1394 )
+set( PACKAGE_REQ_LIBRARY  raw1394 )
+set( PACKAGE_REQ_INCLUDE  libraw1394/raw1394.h )
 
-irg_package_find( "${PACKAGE}" "${PACKAGE_DIR}" "${BASE_LIB}")
+simple_package_find("${PACKAGE_NAME}" 
+                    "${PACKAGE_DIRS}" 
+                    "${PACKAGE_REQ_LIBRARY}"
+                    "${PACKAGE_REQ_INCLUDE}"
+)
 
 ##
-## If additional libraries need to be found, do
-## so here
+## find paths to package libraries
+##
 ################################################
-if( ${PACKAGE_FOUND} ) 
-
-  set( ${PACKAGE_LIBRARIES} 
-    ${${PACKAGE_BASE_LIBRARY}}
-    CACHE STRING "all ${PACKAGE} link libraries"
+if( ${PACKAGE_FOUND} )
+  set( LIBRARY_NAMES
+    raw1394
   )
-  mark_as_advanced( 
-    ${PACKAGE_BASE_LIBRARY} 
-  )
-  
-endif( ${PACKAGE_FOUND} ) 
+  get_library_list(${PACKAGE_UPPER} ${${PACKAGE_LIBRARY_DIR}} "d" "${LIBRARY_NAMES}")
+endif( ${PACKAGE_FOUND} )
 
 
 

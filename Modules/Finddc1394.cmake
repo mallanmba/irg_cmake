@@ -13,15 +13,15 @@
 
 include( SimplePackageFind )
 
-set( PACKAGE_NAME         dc1394 )
-set( PACKAGE_DIRS         libdc1394-2 )
-set( PACKAGE_REQ_LIBRARY  dc1394 )
-set( PACKAGE_REQ_INCLUDE  dc1394/capture.h )
+set( PACKAGE_NAME           dc1394 )
+set( PACKAGE_DIRS           libdc1394-2 )
+set( PACKAGE_REQ_LIBRARY    dc1394 )
+set( PACKAGE_REQ_INCLUDE    dc1394/capture.h )
 
 simple_package_find("${PACKAGE_NAME}" 
-                   "${PACKAGE_DIRS}" 
-                   "${PACKAGE_REQ_LIBRARY}"
-                   "${PACKAGE_REQ_INCLUDE}"
+                    "${PACKAGE_DIRS}" 
+                    "${PACKAGE_REQ_LIBRARY}"
+                    "${PACKAGE_REQ_INCLUDE}"
 )
 
 ################################################

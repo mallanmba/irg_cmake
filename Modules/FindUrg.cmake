@@ -17,29 +17,34 @@
 #
 ######################################################################
 
-include( IrgPackageFind )
+include( SimplePackageFind )
 
-set(     PACKAGE Urg )
-set( PACKAGE_DIR urg )
-set(    BASE_LIB HACK )
+set( PACKAGE_NAME         Urg )
+set( PACKAGE_DIRS         urg )
+set( PACKAGE_REQ_LIBRARY  HACK )
+set( PACKAGE_REQ_INCLUDE  urg/UrgCtrl.h )
 
-irg_package_find( "${PACKAGE}" "${PACKAGE_DIR}" "${BASE_LIB}")
+simple_package_find("${PACKAGE_NAME}" 
+                    "${PACKAGE_DIRS}" 
+                    "${PACKAGE_REQ_LIBRARY}"
+                    "${PACKAGE_REQ_INCLUDE}"
+)
 
 ##
-## If additional libraries need to be found, do
-## so here
+## find paths to package libraries
+##
 ################################################
 ##
-##
-##  TODO!!!  Fix the IrgPackageFind Macro
-##  This fix is tolerated by Mark
-##  Had to add libHACK.so in the URG packages dir
+##  TODO!!!  lib layout is wacky... consider
+##  updating SimplePackageFind to accomodate this... but
+##  for now, add libHACK.so in the URG lib dir and manually
+##  find libraries under lib/urg
 if( ${PACKAGE_FOUND} ) 
 
   find_library( URG_urg_LIBRARY             urg             ${${PACKAGE_LIBRARY_DIR}}/urg NO_DEFAULT_PATH )
   find_library( URG_common_LIBRARY          common          ${${PACKAGE_LIBRARY_DIR}}/urg NO_DEFAULT_PATH )
   find_library( URG_connection_LIBRARY      connection      ${${PACKAGE_LIBRARY_DIR}}/urg NO_DEFAULT_PATH )
-  find_library( URG_connectionSdl_LIBRARY   connection_sdl  ${${PACKAGE_LIBRARY_DIR}}/urg NO_DEFAULT_PATH )
+  find_library( URG_connection_sdl_LIBRARY  connection_sdl  ${${PACKAGE_LIBRARY_DIR}}/urg NO_DEFAULT_PATH )
   find_library( URG_coordinate_LIBRARY      coordinate      ${${PACKAGE_LIBRARY_DIR}}/urg NO_DEFAULT_PATH )
   find_library( URG_geometry_LIBRARY        geometry        ${${PACKAGE_LIBRARY_DIR}}/urg NO_DEFAULT_PATH )
   find_library( URG_monitor_LIBRARY         monitor         ${${PACKAGE_LIBRARY_DIR}}/urg NO_DEFAULT_PATH )
@@ -49,7 +54,7 @@ if( ${PACKAGE_FOUND} )
     ${URG_urg_LIBRARY}
     ${URG_common_LIBRARY}
     ${URG_connection_LIBRARY}
-    ${URG_connectionSdl_LIBRARY}
+    ${URG_connection_sdl_LIBRARY}
     ${URG_coordinate_LIBRARY}
     ${URG_geometry_LIBRARY}
     ${URG_monitor_LIBRARY}
@@ -59,7 +64,7 @@ if( ${PACKAGE_FOUND} )
     URG_urg_LIBRARY
     URG_common_LIBRARY
     URG_connection_LIBRARY
-    URG_connectionSdl_LIBRARY
+    URG_connection_sdl_LIBRARY
     URG_coordinate_LIBRARY
     URG_geometry_LIBRARY
     URG_monitor_LIBRARY

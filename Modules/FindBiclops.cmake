@@ -21,14 +21,14 @@ set( PACKAGE_REQ_LIBRARY  Biclops )
 set( PACKAGE_REQ_INCLUDE  Biclops.h )
 
 simple_package_find("${PACKAGE_NAME}" 
-                   "${PACKAGE_DIRS}" 
-                   "${PACKAGE_REQ_LIBRARY}"
-                   "${PACKAGE_REQ_INCLUDE}"
+                    "${PACKAGE_DIRS}" 
+                    "${PACKAGE_REQ_LIBRARY}"
+                    "${PACKAGE_REQ_INCLUDE}"
 )
 
 ##
-## If additional libraries need to be found, do
-## so here
+## find paths to package libraries
+##
 ################################################
 if( ${PACKAGE_FOUND} )
   set( LIBRARY_NAMES

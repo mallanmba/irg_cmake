@@ -16,24 +16,29 @@
 #
 ######################################################################
 
-include( IrgPackageFind )
-include( GetLibraryList )
+include( SimplePackageFind )
 
-set(     PACKAGE OpenCV )
-set( PACKAGE_DIR opencv )
-set(    BASE_LIB opencv_core )
+set( PACKAGE_NAME           OpenCV )
+set( PACKAGE_DIRS           opencv )
+set( PACKAGE_REQ_LIBRARY    opencv_core )
+set( PACKAGE_REQ_INCLUDE    opencv2/opencv.hpp )
 
-irg_package_find( "${PACKAGE}" "${PACKAGE_DIR}" "${BASE_LIB}")
+simple_package_find("${PACKAGE_NAME}" 
+                    "${PACKAGE_DIRS}" 
+                    "${PACKAGE_REQ_LIBRARY}"
+                    "${PACKAGE_REQ_INCLUDE}"
+)
 
 ##
-## If additional libraries need to be found, do
-## so here
+## find paths to package libraries
+##
 ################################################
 if( ${PACKAGE_FOUND} ) 
 
   set( LIBRARY_NAMES
     opencv_calib3d
     opencv_contrib
+    opencv_core
     opencv_features2d
     opencv_flann
     opencv_gpu

@@ -13,14 +13,10 @@
 
 include( SimplePackageFind )
 
-set(     PACKAGE curl )
-set( PACKAGE_DIR curl )
-set(    BASE_LIB curl )
-
-set( PACKAGE_NAME         curl )
-set( PACKAGE_DIRS         curl )
-set( PACKAGE_REQ_LIBRARY  curl )
-set( PACKAGE_REQ_INCLUDE  curl/curl.h )
+set( PACKAGE_NAME           curl )
+set( PACKAGE_DIRS           curl )
+set( PACKAGE_REQ_LIBRARY    curl )
+set( PACKAGE_REQ_INCLUDE    curl/curl.h )
 
 simple_package_find("${PACKAGE_NAME}" 
                    "${PACKAGE_DIRS}" 

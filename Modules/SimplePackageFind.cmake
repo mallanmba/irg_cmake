@@ -1,17 +1,20 @@
 include(GetPackageLibSearchPath)
 
-# FIXME this macro should be deprecated and replaced with 
-#       something better... 
-#         * Eliminate the *_BASE_LIBRARY naming
-#         * check for at least one header
-#         * more flexible library naming (for alternate plaforms, versions, etc
-
 # This is a reasonably generic macro for packages
 # located in standard irg places. If the <package>_ROOT_DIR
 # is set before calling this scipt, we search for the base library 
 # in that path and that path only (i.e. <package>_ROOT_DIR/lib ).
 # If <package>_ROOT_DIR is not set, we will search for it
 # in the paths definied by the GetPackageLibSearchPath macro. 
+#
+# If PACKAGE_ADD_SCOPED_INCLUDE is set to true, the include path will 
+# consist of the root include as well as the scoped include - i.e.
+# if the required include is foo/foo.h and the package is found
+# in /usr, the FOO_INCLUDE_DIR be /usr/include AND /usr/include/foo
+# If PACKAGE_ADD_SCOPED_INCLUDE is false (the default), the include 
+# path will be only the root include (i.e. /usr/include) and include 
+# directives in client code will be expected to scope the file (i.e.
+# #include <foo/foo_version.h>
 #-----------------------------------------------------------
 include( GetLibraryList )
 
@@ -57,7 +60,7 @@ if( ${PACKAGE_BASE_LIBRARY} )
     set( ${PACKAGE_ROOT_DIR} "/" )
   endif( _${PACKAGE_ROOT_DIR} )
   
-  message( STATUS "${PACKAGE_ROOT_DIR}=${${PACKAGE_ROOT_DIR}}" )
+  #message( STATUS "  ${PACKAGE_ROOT_DIR}=${${PACKAGE_ROOT_DIR}}" )
 
   set( ${PACKAGE_LIBRARY_DIR} "${${PACKAGE_ROOT_DIR}}/lib" )
   
@@ -68,7 +71,7 @@ if( ${PACKAGE_BASE_LIBRARY} )
     find_file( TEMP_INCLUDE_FILE 
       NAMES ${PACKAGE_REQ_INCLUDE}
       PATHS ${ROOT_INCLUDE_DIR}
-      PATH_SUFFIXES "" ${PACKAGE_REQ_INCLUDE_DIRS}
+      PATH_SUFFIXES "" ${PACKAGE_INCLUDE_SUFFIX}
       NO_DEFAULT_PATH
     )
     
@@ -77,7 +80,22 @@ if( ${PACKAGE_BASE_LIBRARY} )
       set( ${PACKAGE_FOUND} TRUE )
       message(STATUS "  ${PACKAGE_NAME} found in ${${PACKAGE_ROOT_DIR}}")
       string(REGEX REPLACE "/[^/]*$" "" FOUND_INCLUDE_DIR ${TEMP_INCLUDE_FILE} )
-      #set( ${PACKAGE_INCLUDE_DIR} "${FOUND_INCLUDE_DIR}" CACHE PATH "${PACKAGE_NAME} include path")
+      
+      string(REGEX REPLACE "/[^/]*$" "" REQ_INCLUDE_PATH ${PACKAGE_REQ_INCLUDE} )
+      
+      # if PACKAGE_REQ_INCLUDE included a relative path, strip it off FOUND_INCLUDE_DIR
+      if( NOT PACKAGE_ADD_SCOPED_INCLUDE AND NOT ${PACKAGE_REQ_INCLUDE} STREQUAL REQ_INCLUDE_PATH )
+        string(REGEX REPLACE "/${REQ_INCLUDE_PATH}$" "" BARE_INCLUDE_DIR ${FOUND_INCLUDE_DIR} )
+        set(FOUND_INCLUDE_DIR ${BARE_INCLUDE_DIR})
+        unset(BARE_INCLUDE_DIR)
+      endif( NOT PACKAGE_ADD_SCOPED_INCLUDE AND NOT ${PACKAGE_REQ_INCLUDE} STREQUAL REQ_INCLUDE_PATH )
+      
+      # if PACKAGE_INCLUDE_SUFFIX was provided, strip it off FOUND_INCLUDE_DIR
+      if( NOT PACKAGE_ADD_SCOPED_INCLUDE AND PACKAGE_INCLUDE_SUFFIX )
+        string(REGEX REPLACE "/${PACKAGE_INCLUDE_SUFFIX}$" "" BARE_INCLUDE_DIR ${FOUND_INCLUDE_DIR} )
+        set(FOUND_INCLUDE_DIR ${BARE_INCLUDE_DIR})
+      endif( NOT PACKAGE_ADD_SCOPED_INCLUDE AND PACKAGE_INCLUDE_SUFFIX )
+      
       if( FOUND_INCLUDE_DIR STREQUAL ROOT_INCLUDE_DIR )
         set( ${PACKAGE_INCLUDE_DIR} "${ROOT_INCLUDE_DIR}" CACHE PATH "${PACKAGE_NAME} include path")
       else (FOUND_INCLUDE_DIR STREQUAL ROOT_INCLUDE_DIR )

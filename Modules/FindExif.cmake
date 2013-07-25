@@ -12,10 +12,10 @@
 ######################################################################
 include( SimplePackageFind )
 
-set( PACKAGE_NAME         exif )
-set( PACKAGE_DIRS         libexif;libexif-0.6.19 )
-set( PACKAGE_REQ_LIBRARY  exif )
-set( PACKAGE_REQ_INCLUDE  libexif/exif-format.h )
+set( PACKAGE_NAME           exif )
+set( PACKAGE_DIRS           libexif;libexif-0.6.19 )
+set( PACKAGE_REQ_LIBRARY    exif )
+set( PACKAGE_REQ_INCLUDE    libexif/exif-format.h )
 
 simple_package_find("${PACKAGE_NAME}" 
                    "${PACKAGE_DIRS}" 

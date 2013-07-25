@@ -10,28 +10,29 @@
 # PCAP_BASE_LIBRARY    : full path to proj
 #
 ######################################################################
+include( SimplePackageFind )
 
-include( IrgPackageFind )
+set( PACKAGE_NAME         pcap )
+set( PACKAGE_DIRS         libpcap )
+set( PACKAGE_REQ_LIBRARY  pcap )
+set( PACKAGE_REQ_INCLUDE  pcap.h )
 
-set(     PACKAGE pcap )
-set( PACKAGE_DIR libpcap )
-set(    BASE_LIB pcap )
-
-irg_package_find( "${PACKAGE}" "${PACKAGE_DIR}" "${BASE_LIB}")
+simple_package_find("${PACKAGE_NAME}" 
+                    "${PACKAGE_DIRS}" 
+                    "${PACKAGE_REQ_LIBRARY}"
+                    "${PACKAGE_REQ_INCLUDE}"
+)
 
 ##
-## If additional libraries need to be found, do
-## so here
+## find paths to package libraries
+##
 ################################################
-if( ${PACKAGE_FOUND} ) 
-
-  set( ${PACKAGE_LIBRARIES} 
-    ${${PACKAGE_BASE_LIBRARY}}
-    CACHE STRING "all ${PACKAGE} link libraries"
+if( ${PACKAGE_FOUND} )
+  set( LIBRARY_NAMES
+    pcap
   )
-  mark_as_advanced( 
-    ${PACKAGE_BASE_LIBRARY} 
-  )
+  get_library_list(${PACKAGE_UPPER} ${${PACKAGE_LIBRARY_DIR}} "d" "${LIBRARY_NAMES}")
 endif( ${PACKAGE_FOUND} )
+
 
 

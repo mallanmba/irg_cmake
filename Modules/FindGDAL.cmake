@@ -20,11 +20,12 @@ if( MSVC90 )
   set( VCN vc9 )
 endif( MSVC90 )
 
-set( PACKAGE_NAME         "gdal" )
-set( PACKAGE_DIRS         "gdal" )
-set( PACKAGE_REQ_LIBRARY  "gdal;gdal_i-${VCN}" )
-set( PACKAGE_REQ_INCLUDE  "gdal.h" )
-set( PACKAGE_REQ_INCLUDE_DIRS "gdal" )
+set( PACKAGE_NAME           "gdal" )
+set( PACKAGE_DIRS           "gdal" )
+set( PACKAGE_REQ_LIBRARY    "gdal;gdal_i-${VCN}" )
+set( PACKAGE_REQ_INCLUDE    "gdal.h" )
+set( PACKAGE_INCLUDE_SUFFIX "gdal" )
+set( PACKAGE_ADD_SCOPED_INCLUDE TRUE )
 
 simple_package_find("${PACKAGE_NAME}" 
                     "${PACKAGE_DIRS}" 
@@ -33,8 +34,8 @@ simple_package_find("${PACKAGE_NAME}"
 )
 
 ##
-## If additional libraries need to be found, do
-## so here
+## find paths to package libraries
+##
 ################################################
 if( ${PACKAGE_FOUND} ) 
 

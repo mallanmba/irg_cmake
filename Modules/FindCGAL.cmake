@@ -17,10 +17,10 @@
 
 include( SimplePackageFind )
 
-set( PACKAGE_NAME         CGAL )
-set( PACKAGE_DIRS         CGAL )
-set( PACKAGE_REQ_LIBRARY  CGAL )
-set( PACKAGE_REQ_INCLUDE  CGAL/version.h )
+set( PACKAGE_NAME           CGAL )
+set( PACKAGE_DIRS           CGAL )
+set( PACKAGE_REQ_LIBRARY    CGAL )
+set( PACKAGE_REQ_INCLUDE    CGAL/CGALversion.h )
 
 simple_package_find("${PACKAGE_NAME}" 
                    "${PACKAGE_DIRS}" 

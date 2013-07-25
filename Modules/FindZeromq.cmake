@@ -1,16 +1,19 @@
-include( IrgPackageFind )
-set( PACKAGE zeromq )
-set( PACKAGE_DIR zeromq )
-set( BASE_LIB zmq )
+include( SimplePackageFind )
 
-irg_package_find( "${PACKAGE}" "${PACKAGE_DIR}" "${BASE_LIB}" )
+set( PACKAGE_NAME         zeromq )
+set( PACKAGE_DIRS         zeromq )
+set( PACKAGE_REQ_LIBRARY  zmq )
+set( PACKAGE_REQ_INCLUDE  zmq.h )
 
-if( ${PACKAGE_FOUND} ) 
-  set( ${PACKAGE_LIBRARIES} 
-    ${${PACKAGE_BASE_LIBRARY}}
-    CACHE STRING "all ${PACKAGE} link libraries"
+simple_package_find("${PACKAGE_NAME}" 
+                    "${PACKAGE_DIRS}" 
+                    "${PACKAGE_REQ_LIBRARY}"
+                    "${PACKAGE_REQ_INCLUDE}"
+)
+
+if( ${PACKAGE_FOUND} )
+  set( LIBRARY_NAMES
+    zmq
   )
-  mark_as_advanced( 
-    ${PACKAGE_BASE_LIBRARY} 
-  )
+  get_library_list(${PACKAGE_UPPER} ${${PACKAGE_LIBRARY_DIR}} "d" "${LIBRARY_NAMES}")
 endif( ${PACKAGE_FOUND} )

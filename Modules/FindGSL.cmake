@@ -11,36 +11,33 @@
 # GSL_INCLUDE_DIR     : include path
 # GSL_LIBRARIES       : libraries in one variable (use this in your CMakeLists)
 # GSL_LIBRARY_DIR     : library path
-# GSL_BASE_LIBRARY    : full path to gsl
-# GSL_CBLAS_LIBRARY   : full path to gslcblas
+# GSL_gsl_LIBRARY     : full path to gsl
+# GSL_gslcblas_LIBRARY:full path to gslcblas
 #
 ######################################################################
 
-include( IrgPackageFind )
 
-set(     PACKAGE gsl )
-set( PACKAGE_DIR gsl )
-set(    BASE_LIB gsl )
+include( SimplePackageFind )
 
-irg_package_find( "${PACKAGE}" "${PACKAGE_DIR}" "${BASE_LIB}")
+set( PACKAGE_NAME           gsl )
+set( PACKAGE_DIRS           gsl )
+set( PACKAGE_REQ_LIBRARY    gsl )
+set( PACKAGE_REQ_INCLUDE    gsl/gsl_version.h )
+
+simple_package_find("${PACKAGE_NAME}" 
+                    "${PACKAGE_DIRS}" 
+                    "${PACKAGE_REQ_LIBRARY}"
+                    "${PACKAGE_REQ_INCLUDE}"
+)
 
 ##
-## If additional libraries need to be found, do
-## so here
+## find paths to package libraries
+##
 ################################################
-if( ${PACKAGE_FOUND} ) 
-
-  find_library( GSL_CBLAS_LIBRARY gslcblas ${${PACKAGE_LIBRARY_DIR}} )
-  
-  set( ${PACKAGE_LIBRARIES} 
-    ${${PACKAGE_BASE_LIBRARY}}
-    ${GSL_CBLAS_LIBRARY}
-    CACHE STRING "all ${PACKAGE} link libraries"
+if( ${PACKAGE_FOUND} )
+  set( LIBRARY_NAMES
+    gsl
+    gslcblas
   )
-  mark_as_advanced( 
-    ${PACKAGE_BASE_LIBRARY} 
-    GSL_CBLAS_LIBRARY 
-  )
-  
-endif( ${PACKAGE_FOUND} ) 
-
+  get_library_list(${PACKAGE_UPPER} ${${PACKAGE_LIBRARY_DIR}} "d" "${LIBRARY_NAMES}")
+endif( ${PACKAGE_FOUND} )

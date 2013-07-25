@@ -11,30 +11,27 @@
 # ILRIS3_AUXPLATFORM_LIBRARY   : full path to auxplatform
 ######################################################################
 
-include( IrgPackageFind )
+include( SimplePackageFind )
 
-set(     PACKAGE Ilris3 )
-set( PACKAGE_DIR ilris3dAPI )
-set(    BASE_LIB lidarapi )
+set( PACKAGE_NAME         Ilris3 )
+set( PACKAGE_DIRS         ilris3dAPI )
+set( PACKAGE_REQ_LIBRARY  lidarapi )
+set( PACKAGE_REQ_INCLUDE  Ilris3dAPI.h )
 
-irg_package_find( "${PACKAGE}" "${PACKAGE_DIR}" "${BASE_LIB}")
+simple_package_find("${PACKAGE_NAME}" 
+                    "${PACKAGE_DIRS}" 
+                    "${PACKAGE_REQ_LIBRARY}"
+                    "${PACKAGE_REQ_INCLUDE}"
+)
 
 ##
-## If additional libraries need to be found, do
-## so here
+## find paths to package libraries
+##
 ################################################
-if( ${PACKAGE_FOUND} ) 
-
-  find_library( ILRIS3_AUXPLATFORM_LIBRARY  auxplatform ${${PACKAGE_LIBRARY_DIR}} NO_DEFAULT_PATH )
-
-  set( ${PACKAGE_LIBRARIES} 
-    ${${PACKAGE_BASE_LIBRARY}}
-    ${ILRIS3_AUXPLATFORM_LIBRARY} 
-    CACHE STRING "all ${PACKAGE} link libraries"
+if( ${PACKAGE_FOUND} )
+  set( LIBRARY_NAMES
+    lidarapi
+    auxplatform
   )
-  mark_as_advanced( 
-    ${PACKAGE_BASE_LIBRARY} 
-    ILRIS3_AUXPLATFORM_LIBRARY
-  )
-
-endif( ${PACKAGE_FOUND} ) 
+  get_library_list(${PACKAGE_UPPER} ${${PACKAGE_LIBRARY_DIR}} "d" "${LIBRARY_NAMES}")
+endif( ${PACKAGE_FOUND} )

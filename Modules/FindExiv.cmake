@@ -13,15 +13,15 @@
 
 include( SimplePackageFind )
 
-set( PACKAGE_NAME         exiv2 )
-set( PACKAGE_DIRS         exiv2 )
-set( PACKAGE_REQ_LIBRARY  exiv2 )
-set( PACKAGE_REQ_INCLUDE  exiv2/version.hpp )
+set( PACKAGE_NAME           exiv2 )
+set( PACKAGE_DIRS           exiv2 )
+set( PACKAGE_REQ_LIBRARY    exiv2 )
+set( PACKAGE_REQ_INCLUDE    exiv2/version.hpp )
 
 simple_package_find("${PACKAGE_NAME}" 
-                   "${PACKAGE_DIRS}" 
-                   "${PACKAGE_REQ_LIBRARY}"
-                   "${PACKAGE_REQ_INCLUDE}"
+                    "${PACKAGE_DIRS}" 
+                    "${PACKAGE_REQ_LIBRARY}"
+                    "${PACKAGE_REQ_INCLUDE}"
 )
 
 ################################################
