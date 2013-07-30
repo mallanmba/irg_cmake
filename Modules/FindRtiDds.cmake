@@ -93,8 +93,7 @@ endif( RTIDDS_ROOT_DIR )
 # look for rtiddsgen script
 #--------------------------------------------------
 find_file(RTIDDS_IDL_COMMAND  ${IDL_COMMAND_FILENAME}
-  ${SCRIPTS_SEARCH_PATH}
-  NO_DEFAULT_PATH
+  HINTS ${SCRIPTS_SEARCH_PATH}
   DOC "Path to RTI DDS IDL compiler"
 )
 message(STATUS "  RTIDDS_IDL_COMMAND = ${RTIDDS_IDL_COMMAND}")
@@ -313,6 +312,7 @@ else( RTIDDS_IDL_COMMAND )
 
   set( RTIDDS_FOUND FALSE )
   message( STATUS  "  RTI DDS IDL compiler could not be found. Searched in ${SCRIPTS_SEARCH_PATH}")    
+  message( STATUS  "  Try passing -DRIDDS_ROOT_DIR=<path> to cmake command, or setting the NDDSHOME or RTIDDS_ROOT environment variable")    
   
 endif( RTIDDS_IDL_COMMAND )
 
