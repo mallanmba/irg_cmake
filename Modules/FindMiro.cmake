@@ -13,7 +13,6 @@
 # MIRO_miro_LIBRARY     
 # MIRO_miroBase_LIBRARY    
 # MIRO_miroCore_LIBRARY    
-# MIRO_miroDds_LIBRARY    
 # MIRO_miroParams_LIBRARY    
 # MIRO_miroWidgets_LIBRARY    
 # MIRO_miroXml_LIBRARY    
@@ -67,7 +66,6 @@ if( MIRO_ROOT_DIR )
     miro 
     miroBase
     miroCore
-    miroDds
     miroParams
     miroWidgets
     miroXml
