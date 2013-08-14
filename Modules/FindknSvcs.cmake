@@ -28,7 +28,6 @@ set( LIBRARY_NAMES
   knFieldDMapping
   knFrameManager     
   knFrameNotify      
-  knFrameStoreSvc           
   knIlrisLidarSvc    
   knLmsLidarSvc
   knLocalMap

@@ -29,6 +29,7 @@ set( LIBRARY_NAMES
   rapidIo
   rapidExtIo
   rapidExtArcIo
+  knFrameStoreSvc           
 )
 get_library_list(KNRAPID ${KNRAPID_LIBRARY_DIR} "d" "${LIBRARY_NAMES}")
 
