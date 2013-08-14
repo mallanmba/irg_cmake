@@ -18,6 +18,7 @@ set( IRGUTIL_FOUND TRUE )
 
 set( LIBRARY_NAMES
   irgUtmll
+  irgSha1
 )
 
 get_library_list(IRGUTIL ${IRGUTIL_LIBRARY_DIR} "d" "${LIBRARY_NAMES}")
