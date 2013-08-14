@@ -25,7 +25,6 @@ set( LIBRARY_NAMES
   knLocalMapEval
   knLocomotionModel
   knSunTracker
-  knSha1
   knStereo
 	knFieldDMap
 )
