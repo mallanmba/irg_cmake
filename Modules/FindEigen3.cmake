@@ -68,10 +68,14 @@ if (EIGEN3_INCLUDE_DIR)
 
 else (EIGEN3_INCLUDE_DIR)
 
+#message(STATUS "EIGEN3_ROOT_DIR=${EIGEN3_ROOT_DIR}")
+#message(STATUS "IRG_PACKAGES_DIR=${IRG_PACKAGES_DIR}")
   find_path(EIGEN3_INCLUDE_DIR NAMES signature_of_eigen3_matrix_library
       HINTS
       ${EIGEN3_ROOT_DIR}
+      ${EIGEN3_ROOT_DIR}/include
       $ENV{EIGEN3_ROOT}
+      $ENV{EIGEN3_ROOT}/include
       ${IRG_PACKAGES_DIR}
       PATHS
       ${CMAKE_INSTALL_PREFIX}/include
