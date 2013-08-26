@@ -34,7 +34,6 @@ set( LIBRARY_NAMES
   knSerial
   knSimMotor
   knSonyPtz
-  knSystemInfo
   knTyzxG2
   knUrgLrf
   knUsbCamera
