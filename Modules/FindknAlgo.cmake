@@ -20,7 +20,6 @@ set( LIBRARY_NAMES
   knArcNav
   knCoordinatedWheelLocomotion
   knDeadReckoning
-  knFetchPool
   knHfta
   knLocalMapEval
   knLocomotionModel
