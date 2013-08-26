@@ -12,6 +12,7 @@
 ######################################################################
 
 include( SimplePackageFind )
+include( CheckSymbolExists ) 
 
 set( PACKAGE_NAME           curl )
 set( PACKAGE_DIRS           curl )
