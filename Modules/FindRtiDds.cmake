@@ -7,15 +7,26 @@
 #
 # Standard environment variable for RTI DDS is NDDSHOME
 # 
+# Note that RTI DDS *requires* some defines to be passed to the 
+# compiler. This script will define the RTIDDS_DEFINES variable
+# for this purpose - you should call 
+#  add_srcdir_definitions(${RTIDDS_DEFINES}) 
+# in your CMakeLists.txt file. 
+#
+# The RTIDDS_DEFINE_FLAGS variable is deprecated because the 
+# add_definitions command is not scoped to current directory so it
+# caused problems with nested directory structures. 
+#
 # Output Variables:
 # -----------------------
 # RTIDDS_FOUND          : TRUE if search succeded
-# RTIDDS_DEFINE_FLAGS    : Necessary platform defines (put add_definitions(${RTIDDS_DEFINE_FLAGS}) in your CMakeLists))
+# RTIDDS_DEFINES        : Necessary platform defines (put add_srcdir_definitions(${RTIDDS_DEFINES}) in your CMakeLists))
 # RTIDDS_INCLUDE_DIR    : include directories
 # RTIDDS_LIBRARIES      : all libraries in one variable (use this in your CMakeLists)
 # RTIDDS_LIBRARY_DIR    : library path
 # RTIDDS_IDL_COMMAND    : full path to IDL compiler
-#
+# RTIDDS_DEFINE_FLAGS   : (DEPRECATED) Necessary platform defines (put add_definitions(${RTIDDS_DEFINE_FLAGS}) in your CMakeLists))
+
 # Limited Bandwidth Plugin Variables:
 # -----------------------
 # RTIDDS_LB_FOUND       : true if Limited Bandwidth plugin found
