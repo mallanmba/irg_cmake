@@ -24,7 +24,7 @@ set( LIBRARY_NAMES
   rapidDds
   rapidExtDds
   rapidExtArcDds
-  rapidCmd
+  rapidCommanding
   rapidUtil
   rapidIo
   rapidExtIo
