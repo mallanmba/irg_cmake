@@ -102,11 +102,11 @@ macro( tao_wrap_idl )
     # newer versions of TAO don't generate servant inline files
     # not sure what version this happened at, the version 
     # below is a guess
-    if( ACE_VERSION VERSION_LESS "6.0.0" )
+    if( ACE_VERSION VERSION_LESS "6.0.2" )
       set( IDL_OUTPUT_HEADERS ${IDL_OUTPUT_HEADERS} 
         ${OOSDIR}/${IDL_BASE}${IDL_SINL} 
       )
-    endif( ACE_VERSION VERSION_LESS "6.0.0" )
+    endif( ACE_VERSION VERSION_LESS "6.0.2" )
   
     set( IDL_OUTPUT_SOURCES
       ${OOSDIR}/${IDL_BASE}${IDL_CSRC}
