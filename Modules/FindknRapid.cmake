@@ -31,6 +31,8 @@ set( LIBRARY_NAMES
   rapidExtArcIo
   knFrameStoreSvc
   knSystemInfoSvc
+  knRaft
+  knProcessManager
 )
 get_library_list(KNRAPID ${KNRAPID_LIBRARY_DIR} "d" "${LIBRARY_NAMES}")
 

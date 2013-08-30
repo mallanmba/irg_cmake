@@ -43,9 +43,7 @@ set( LIBRARY_NAMES
   knPoseSensing
   knProcessManager
   knPtuSvcs
-  knRaft
   knRapid2Gri
-  knRapid
   knRapidSvcs  
   knRapidTiling      
   knRapidTrajectory
