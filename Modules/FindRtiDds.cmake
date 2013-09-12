@@ -38,6 +38,7 @@ message(STATUS "Looking for RTI DDS")
 
 include( GetPackageLibSearchPath )
 include( GetLibraryList )
+include( TestBigEndian )
 
 # include the idl generation macro in the Find 
 # script so we don't have to explicitly include 
@@ -68,6 +69,12 @@ else ( WIN32 )
   set( RTIDDS_DEFINE_FLAGS -DRTI_UNIX -DRTI_LINUX )
   set( RTIDDS_DEFINES       RTI_UNIX RTI_LINUX )
 endif( WIN32 )
+
+test_big_endian(BIGENDIAN)
+if( NOT BIGENDIAN ) 
+  set( RTIDDS_DEFINE_FLAGS ${RTIDDS_DEFINE_FLAGS} -DRTI_ENDIAN_LITTLE )
+  set( RTIDDS_DEFINES      ${RTIDDS_DEFINES} RTI_ENDIAN_LITTLE )
+endif( NOT BIGENDIAN )
 
 # set the scripts search path 
 #--------------------------------------------------
