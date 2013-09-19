@@ -38,14 +38,17 @@ include( GenerateMiroMakeParams )
 if( NOT MIRO_MAKEPARAMS_EXECUTABLE )
   # verify the presence of the miro "MakeParams" 
   # executable
-  #------------------------------------------------
-  find_program( MIRO_MAKEPARAMS_EXECUTABLE MakeParams
-    ${MIRO_ROOT_DIR}/bin
-    $ENV{MIRO_ROOT}/bin
-    ${PROJ_SRC_PARENT}/${ARCHITECTURE}/bin
-    ${PROJ_SRC_PARENT}/Miro/bin
-    ${LOCAL_RELEASES}/roversw/${ARCHITECTURE}/bin
-    NO_SYSTEM_ENVIRONMENT_PATH
+ #------------------------------------------------
+  find_program( MIRO_MAKEPARAMS_EXECUTABLE 
+    NAME MakeParams
+    PATHS
+      ${MIRO_ROOT_DIR}
+      $ENV{MIRO_ROOT}
+      ${PROJ_SRC_PARENT}/${ARCHITECTURE}
+      ${PROJ_SRC_PARENT}
+      /usr/local/irg/packages/${ARCHITECTURE}/Miro
+      ${LOCAL_RELEASES}/roversw/${ARCHITECTURE}
+    PATH_SUFFIXES bin
     DOC "Miro MakeParams executable"
   )
 endif( NOT MIRO_MAKEPARAMS_EXECUTABLE )
