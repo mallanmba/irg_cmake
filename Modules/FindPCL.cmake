@@ -44,10 +44,6 @@ if( PCL_COMMON_LIB )
   )
   #message(STATUS "  (dbg) PCL_CONFIG_FILE=${PCL_CONFIG_FILE}")
 
-  # Sigh. ROS puts PCL ROS message includes in include/pcl and puts
-  # the *actual* PCL headers in include/pcl-1.6/pcl. Nice, guys. 
-  # Whatever... for the time being, just give up if pcl_config.h 
-  # is not found
   if( PCL_CONFIG_FILE )  
 
     file(STRINGS ${PCL_CONFIG_FILE} PCL_VERSIONS_TMP REGEX "^#define PCL_[A-Z]+_VERSION[ \t]+[0-9]+$")
