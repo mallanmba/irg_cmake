@@ -26,16 +26,17 @@ message(STATUS "Looking for OpenCV...")
 
 find_file(OpenCVConfig_FILE "OpenCVConfig.cmake" 
   PATHS ${OPENCV_ROOT_DIR}
-        ${OPENCV_ROOT_DIR}/share/OpenCV
         $ENV{OPENCV_ROOT}
-        $ENV{OPENCV_ROOT}/share/OpenCV
-        ${IRG_PACKAGES_DIR}/opencv/share/OpenCV
-        /usr/share/opencv 
-        /usr/lib64/cmake/opencv
-        /usr/lib/cmake/opencv
-        /usr/local/share/opencv
-        /opt/local/share/opencv
+        ${IRG_PACKAGES_DIR}/opencv
+        /usr/lib64
+        /usr/lib
+        /usr/local
+        /opt/local
         /opt/local/lib/cmake
+    PATH_SUFFIXES
+        share/OpenCV
+        share/opencv
+        share
   DOC "Location of OpenCVConfig.cmake"
 )
 
