@@ -45,7 +45,6 @@ if( PCL_COMMON_LIB )
   #message(STATUS "  (dbg) PCL_CONFIG_FILE=${PCL_CONFIG_FILE}")
 
   if( PCL_CONFIG_FILE )  
-
     file(STRINGS ${PCL_CONFIG_FILE} PCL_VERSIONS_TMP REGEX "^#define PCL_[A-Z]+_VERSION[ \t]+[0-9]+$")
     string(REGEX REPLACE ".*#define PCL_MAJOR_VERSION[ \t]+([0-9]+).*" "\\1"    PCL_VERSION_MAJOR ${PCL_VERSIONS_TMP})
     string(REGEX REPLACE ".*#define PCL_MINOR_VERSION[ \t]+([0-9]+).*" "\\1"    PCL_VERSION_MINOR ${PCL_VERSIONS_TMP})  
