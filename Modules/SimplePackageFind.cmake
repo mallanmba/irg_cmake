@@ -146,7 +146,7 @@ endif( ${PACKAGE_BASE_LIBRARY} )
 
 unset( ${PACKAGE_BASE_LIBRARY} CACHE )
 
-message(STATUS "  (dbg) ${PACKAGE_INCLUDE_DIR} = ${${PACKAGE_INCLUDE_DIR}}")
-message(STATUS "  (dbg) ${PACKAGE_LIBRARY_DIR} = ${${PACKAGE_LIBRARY_DIR}}")
+#message(STATUS "  (dbg) ${PACKAGE_INCLUDE_DIR} = ${${PACKAGE_INCLUDE_DIR}}")
+#message(STATUS "  (dbg) ${PACKAGE_LIBRARY_DIR} = ${${PACKAGE_LIBRARY_DIR}}")
 
 endmacro( simple_package_find )

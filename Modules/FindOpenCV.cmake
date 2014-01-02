@@ -43,8 +43,10 @@ find_file(OpenCVConfig_FILE "OpenCVConfig.cmake"
 if( EXISTS ${OpenCVConfig_FILE} )
 
   message( STATUS "  Found ${OpenCVConfig_FILE}" )
-  message( STATUS "  Using FindOpenCV-willow.cmake" )
-  find_package( OpenCV-willow )
+  #message( STATUS "  Using FindOpenCV-willow.cmake" )
+  #find_package( OpenCV-willow )
+  message( STATUS "  Using FindOpenCV-useConfig.cmake" )
+  find_package( OpenCV-useConfig )
   
 else( EXISTS ${OpenCVConfig_FILE} )
   

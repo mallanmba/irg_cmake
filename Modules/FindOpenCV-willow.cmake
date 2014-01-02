@@ -242,14 +242,15 @@ endif(NOT OpenCV_FOUND)
 #if(OpenCV_FOUND)
 #option(OpenCV_BACKWARD_COMPA "Add some variable to make this script compatible with the other version of FindOpenCV.cmake" false)
 #if(OpenCV_BACKWARD_COMPA)
+
         #find_path(OpenCV_INCLUDE_DIRS "cv.h" PATHS "${OpenCV_DIR}" PATH_SUFFIXES "include" "include/opencv" DOC "Include directory")
         if( HAVE_OLD_OPENCV_HEADERS )
           find_path(OpenCV_INCLUDE_DIR "opencv/cv.h" HINTS "${OpenCV_DIR}" PATH_SUFFIXES "include" "include/opencv" DOC "Include directory")
         else( HAVE_OLD_OPENCV_HEADERS )
           find_path(OpenCV_INCLUDE_DIR "opencv2/opencv.hpp" HINTS "${OpenCV_DIR}" PATH_SUFFIXES "include" DOC "Include directory")
         endif( HAVE_OLD_OPENCV_HEADERS )
-        
         set(OpenCV_LIBRARIES "${OpenCV_LIBS}" CACHE STRING "" FORCE)
+
 #endif(OpenCV_BACKWARD_COMPA)
 #endif(OpenCV_FOUND)
 ##====================================================

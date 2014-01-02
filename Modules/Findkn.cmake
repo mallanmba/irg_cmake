@@ -18,6 +18,7 @@ set( KN_LIBRARY_DIR ${KN_ROOT_DIR}/lib )
 set( LIBRARY_NAMES
   knShare
   knMath
+  knGeometry
   knFetchPool
   knSystemInfo
   knFrameStore
