@@ -41,13 +41,12 @@ if( NOT MIRO_MAKEPARAMS_EXECUTABLE )
  #------------------------------------------------
   find_program( MIRO_MAKEPARAMS_EXECUTABLE 
     NAME MakeParams
-    PATHS
+    HINTS
       ${MIRO_ROOT_DIR}
       $ENV{MIRO_ROOT}
       ${PROJ_SRC_PARENT}/${ARCHITECTURE}
       ${PROJ_SRC_PARENT}
-      /usr/local/irg/packages/${ARCHITECTURE}/Miro
-      ${LOCAL_RELEASES}/roversw/${ARCHITECTURE}
+      ${IRG_PACKAGES_DIR}/Miro
     PATH_SUFFIXES bin
     DOC "Miro MakeParams executable"
   )
