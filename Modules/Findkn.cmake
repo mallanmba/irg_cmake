@@ -19,8 +19,6 @@ set( LIBRARY_NAMES
   knShare
   knMath
   knGeometry
-  knFetchPool
-  knSystemInfo
   knFrameStore
   knMotorShare
 )
