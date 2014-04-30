@@ -14,6 +14,28 @@ if(EXISTS "${OpenCVConfig_FILE}")
     set( OpenCV_DIR ${OpenCV_INSTALL_PATH} )
   endif(WIN32)
 
+  ## Awesome. OpenCVConfig.cmake has changed yet again and
+  ## no longer has the OpenCV_LIB_DIR variable (at least on 
+  ## Ubuntu 14.04) So lets try and guess what it is, shall we?
+  if( NOT OpenCV_LIB_DIR )
+    if(CMAKE_VERSION VERSION_GREATER 2.8.4)
+      include(GNUInstallDirs)
+    else(CMAKE_VERSION VERSION_GREATER 2.8.4)
+      # if we're using an ancient cmake, just fake it
+      set(CMAKE_INSTALL_LIBDIR lib)
+    endif(CMAKE_VERSION VERSION_GREATER 2.8.4)
+    find_library( OPENCV_CORE_LIB opencv_core
+                  HINTS ${OpenCV_INSTALL_PATH}/lib
+                        ${OpenCV_INSTALL_PATH}/${CMAKE_INSTALL_LIBDIR}
+                  NO_DEFAULT_PATH )
+    string(REGEX REPLACE "/[^/]*$" "" OpenCV_LIB_DIR ${OPENCV_CORE_LIB})
+    unset(OPENCV_CORE_LIB CACHE)
+  endif( NOT OpenCV_LIB_DIR )
+  
+  ## print out the important variables to help debug if things go wrong
+  message( STATUS "    OpenCV_INSTALL_PATH=${OpenCV_INSTALL_PATH}")
+  message( STATUS "    OpenCV_LIB_DIR=${OpenCV_LIB_DIR}")
+
   ## Search for a specific version
   set(CVLIB_SUFFIX "${OpenCV_VERSION_MAJOR}${OpenCV_VERSION_MINOR}${OpenCV_VERSION_PATCH}")
 

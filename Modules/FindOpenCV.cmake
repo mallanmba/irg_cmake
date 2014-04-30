@@ -25,15 +25,10 @@ include( SetIrgPaths )
 message(STATUS "Looking for OpenCV...")
 
 find_file(OpenCVConfig_FILE "OpenCVConfig.cmake" 
-  PATHS ${OPENCV_ROOT_DIR}
+  HINTS ${OPENCV_ROOT_DIR}
         $ENV{OPENCV_ROOT}
         ${IRG_PACKAGES_DIR}/opencv
-        /usr/lib64
-        /usr/lib
-        /usr/local
-        /opt/local
-        /opt/local/lib/cmake
-    PATH_SUFFIXES
+  PATH_SUFFIXES
         share/OpenCV
         share/opencv
         share
