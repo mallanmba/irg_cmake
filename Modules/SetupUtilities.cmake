@@ -18,7 +18,8 @@ endmacro( find_package_if )
 ## will abort. 
 ##   assert( "minimum requirements" OPENGL_FOUND AND NOT APPLE )
 ##
-#################################################
+################################################# 
+if (NOT ${CATKIN_TOPLEVEL})
 macro( assert MESSAGE )
 
   if( ${ARGN} )
@@ -35,6 +36,7 @@ macro( assert MESSAGE )
   endif( ${ARGN} )
 
 endmacro( assert )
+endif(NOT ${CATKIN_TOPLEVEL})
 
 ## minimum_requirements
 ##
@@ -177,12 +179,21 @@ macro( doxygen_create_doc_target )
 
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${DOXYGEN_WORKING_DIR}/Doxyfile @ONLY)
   
-  add_custom_target(doc
+  add_custom_target(${PROJECT_NAME}_doc
     ${DOXYGEN_EXECUTABLE} ${DOXYGEN_WORKING_DIR}/Doxyfile
     WORKING_DIRECTORY     ${DOXYGEN_WORKING_DIR}
     COMMENT "Generating API documentation with Doxygen" VERBATIM
   )
   
+  # create doc target, but only once
+  get_target_property(DOC_TARGET doc TYPE)
+  if(NOT DOC_TARGET)
+    add_custom_target(doc)
+  endif()
+
+  # add local doc target to doc target dependency
+  add_dependencies(doc ${PROJECT_NAME}_doc)
+
 endmacro( doxygen_create_doc_target )
 
 
