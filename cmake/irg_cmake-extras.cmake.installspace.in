@@ -3,9 +3,9 @@ list(INSERT CMAKE_MODULE_PATH 0 "${cmake_modules_DIR}/../../../@CATKIN_PACKAGE_S
 
 include( SetArchitecture )
 include( SetupBuildSwitch )
-include( SetupConfigureFile )
 include( SetupCTest )
+include( SetupConfigureFile )
 include( SetupInstall )
 include( SetupRPATH )
-include( SetupWarnLevel )
 include( SetupUtilities )
+include( SetupWarnLevel )
