@@ -28,6 +28,9 @@ string(REGEX REPLACE "/[^/]*$" "" PROJ_SRC_PARENT ${PROJECT_SOURCE_DIR})
 include( SetArchitecture )
 include( GetLibraryList )
 
+#if( MIRO_ROOT_DIR )
+#  message(STATUS "  (dbg) MIRO_ROOT_DIR=${MIRO_ROOT_DIR}" )
+#endif()
 
 # include the GenerateMiroMakeParams
 # here so it is automatically available 
