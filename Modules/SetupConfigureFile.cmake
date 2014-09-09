@@ -98,12 +98,18 @@ macro( setup_configure_file )
     set( CONFIG_IN_FILEPATH ${PROJECT_SOURCE_DIR}/../cmake/config.h.in )
   endif( NOT EXISTS ${CONFIG_IN_FILEPATH} )
 
+  # target file path
+  if (${CATKIN_TOPLEVEL})
+    set(TARGET_FILEPATH ${CATKIN_DEVEL_PREFIX}/${CATKIN_GLOBAL_INCLUDE_DESTINATION}/${DEST_DIR}/${CONFIGURE_FILENAME})
+  else  (${CATKIN_TOPLEVEL})
+    set(TARGET_FILEPATH ${PROJECT_BINARY_DIR}/src/${DEST_DIR}/${CONFIGURE_FILENAME})
+  endif  (${CATKIN_TOPLEVEL})
   configure_file(
     ${CONFIG_IN_FILEPATH}
-    ${PROJECT_BINARY_DIR}/src/${DEST_DIR}/${CONFIGURE_FILENAME}
+    ${TARGET_FILEPATH}
   )
   add_definitions(-DHAVE_${CONFIGURE_NAME}_H)
-  install(FILES ${PROJECT_BINARY_DIR}/src/${DEST_DIR}/${CONFIGURE_FILENAME}
+  install(FILES ${TARGET_FILEPATH}
           DESTINATION include/${DEST_DIR} )
 
   if(WIN32)
