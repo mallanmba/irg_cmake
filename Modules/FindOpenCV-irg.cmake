@@ -35,7 +35,7 @@ simple_package_find("${PACKAGE_NAME}"
 ################################################
 if( ${PACKAGE_FOUND} ) 
 
-  set( LIBRARY_NAMESPCL_VERSION_MAJOR
+  set( LIBRARY_NAMES
     opencv_calib3d
     opencv_contrib
     opencv_core
