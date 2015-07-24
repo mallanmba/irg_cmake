@@ -33,6 +33,10 @@ macro( miro_makeparams )
   # in-source files need to see out-of-source files
   include_directories( "${CMAKE_CURRENT_BINARY_DIR}" )
 
+  string( REGEX MATCH "${CMAKE_SOURCE_DIR}/.*/src/.*" IS_SRC_MODULE ${CMAKE_CURRENT_SOURCE_DIR} )
+  # extract "module" path. Requires that directories are named ${PROJECT}/src/${MODULE}
+  string( REGEX REPLACE "${CMAKE_SOURCE_DIR}/.*/src/" "" MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}" )
+
   # the generated files need to reference the *_Export files,
   # so copy them to the out-of-source tree to avoid nasty
   # include path referencing mess
@@ -44,6 +48,15 @@ macro( miro_makeparams )
       "${CMAKE_CURRENT_SOURCE_DIR}/${EXPORT_FILE}"
       "${CMAKE_CURRENT_BINARY_DIR}/${EXPORT_FILE}"
     )
+    if( catkin_FOUND AND IS_SRC_MODULE )
+      set( EXPORT_DEVEL_DEST ${CATKIN_DEVEL_PREFIX}/${CATKIN_GLOBAL_INCLUDE_DESTINATION}/${MODULE_PATH}/ )
+      message(STATUS "Copying ${EXPORT_FILE} file to devel space... (GenerateMiroMakeParams)" )
+      exec_program("${CMAKE_COMMAND}" ARGS
+        -E copy_if_different
+        "${CMAKE_CURRENT_SOURCE_DIR}/${EXPORT_FILE}"
+        "${EXPORT_DEVEL_DEST}/${EXPORT_FILE}"
+    )
+    endif( catkin_FOUND AND IS_SRC_MODULE )
   endif( EXPORT_FILE )
 
   set( MIRO_MAKEPARAMS_HEADERS "" )
@@ -101,10 +114,7 @@ macro( miro_makeparams )
       ## copy header to devel/include if we are using catkin
       ## and header is under ${PROJECT}/src/...
       ##---------------------------------------------------
-      string( REGEX MATCH "${CMAKE_SOURCE_DIR}/.*/src/.*" IS_SRC_MODULE ${CMAKE_CURRENT_SOURCE_DIR} )
       if( catkin_FOUND AND IS_SRC_MODULE )
-        # extract "module" path. Requires that directories are named ${PROJECT}/src/${MODULE}
-        string( REGEX REPLACE "${CMAKE_SOURCE_DIR}/.*/src/" "" MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}" )
 
         set( PARAMS_OUTPUT_TARGET MiroParams_${PARAMS_BASE} )
         add_custom_target( ${PARAMS_OUTPUT_TARGET} ALL DEPENDS MakeParams ${PARAMS_OUTPUT} )
