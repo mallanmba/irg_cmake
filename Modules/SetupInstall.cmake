@@ -12,8 +12,17 @@ foreach( MODULE_PATH ${CMAKE_MODULE_PATH} )
                     "${UNINSTALL_OUT}"
                     IMMEDIATE @ONLY
     )
-    add_custom_target(uninstall
+    add_custom_target(${PROJECT_NAME}_uninstall
                    "${CMAKE_COMMAND}" -P "${UNINSTALL_OUT}")
+    # create uninstall target, but only once
+    get_target_property(UNINSTALL_TARGET uninstall TYPE)
+    if(NOT UNINSTALL_TARGET)
+      add_custom_target(uninstall)
+    endif()
+
+    # add local doc target to doc target dependency
+    add_dependencies(uninstall ${PROJECT_NAME}_uninstall)
+    
     break()
   endif( EXISTS ${UNINSTALL_IN} )
 endforeach( MODULE_PATH )

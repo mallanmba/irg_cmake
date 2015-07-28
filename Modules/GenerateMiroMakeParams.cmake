@@ -33,6 +33,10 @@ macro( miro_makeparams )
   # in-source files need to see out-of-source files
   include_directories( "${CMAKE_CURRENT_BINARY_DIR}" )
 
+  string( REGEX MATCH "${CMAKE_SOURCE_DIR}/.*/src/.*" IS_SRC_MODULE ${CMAKE_CURRENT_SOURCE_DIR} )
+  # extract "module" path. Requires that directories are named ${PROJECT}/src/${MODULE}
+  string( REGEX REPLACE "${CMAKE_SOURCE_DIR}/.*/src/" "" MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}" )
+
   # the generated files need to reference the *_Export files,
   # so copy them to the out-of-source tree to avoid nasty
   # include path referencing mess
@@ -44,6 +48,15 @@ macro( miro_makeparams )
       "${CMAKE_CURRENT_SOURCE_DIR}/${EXPORT_FILE}"
       "${CMAKE_CURRENT_BINARY_DIR}/${EXPORT_FILE}"
     )
+    if( catkin_FOUND AND IS_SRC_MODULE )
+      set( EXPORT_DEVEL_DEST ${CATKIN_DEVEL_PREFIX}/${CATKIN_GLOBAL_INCLUDE_DESTINATION}/${MODULE_PATH}/ )
+      message(STATUS "Copying ${EXPORT_FILE} file to devel space... (GenerateMiroMakeParams)" )
+      exec_program("${CMAKE_COMMAND}" ARGS
+        -E copy_if_different
+        "${CMAKE_CURRENT_SOURCE_DIR}/${EXPORT_FILE}"
+        "${EXPORT_DEVEL_DEST}/${EXPORT_FILE}"
+    )
+    endif( catkin_FOUND AND IS_SRC_MODULE )
   endif( EXPORT_FILE )
 
   set( MIRO_MAKEPARAMS_HEADERS "" )
@@ -98,7 +111,24 @@ macro( miro_makeparams )
         GENERATED True
       )
 
-      # install source xml config
+      ## copy header to devel/include if we are using catkin
+      ## and header is under ${PROJECT}/src/...
+      ##---------------------------------------------------
+      if( catkin_FOUND AND IS_SRC_MODULE )
+
+        set( PARAMS_OUTPUT_TARGET MiroParams_${PARAMS_BASE} )
+        add_custom_target( ${PARAMS_OUTPUT_TARGET} ALL DEPENDS MakeParams ${PARAMS_OUTPUT} )
+
+        set( PARAMS_DEVEL_DEST ${CATKIN_DEVEL_PREFIX}/${CATKIN_GLOBAL_INCLUDE_DESTINATION}/${MODULE_PATH}/${PARAMS_PATH} )
+        add_custom_command(
+          TARGET ${PARAMS_OUTPUT_TARGET}
+          POST_BUILD
+          COMMAND ${CMAKE_COMMAND} -E copy_if_different ${PARAMS_BASE_FULL_PATH}.h ${PARAMS_DEVEL_DEST}/${PARAMS_BASE}.h
+        )
+      endif( catkin_FOUND AND IS_SRC_MODULE )
+
+      ## install source xml config
+      ##---------------------------------------------------
       if( MIRO_MAKEPARAMS_CONFIG_INSTALL_DIR )
         install_files( ${MIRO_MAKEPARAMS_CONFIG_INSTALL_DIR} FILES ${PARAMS_FILENAME} )
       endif( MIRO_MAKEPARAMS_CONFIG_INSTALL_DIR )
