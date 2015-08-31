@@ -115,9 +115,15 @@ macro( miro_makeparams )
       ## and header is under ${PROJECT}/src/...
       ##---------------------------------------------------
       if( catkin_FOUND AND IS_SRC_MODULE )
+        # if a target named MakeParams exists, assume we are in
+        # the same workspace as Miro and add dependency on that target
+        set( MAKE_PARAMS_TARGET "" )
+        if( TARGET MakeParams )
+          set( MAKE_PARAMS_TARGET MakeParams )
+        endif( TARGET MakeParams )
 
         set( PARAMS_OUTPUT_TARGET MiroParams_${PARAMS_BASE} )
-        add_custom_target( ${PARAMS_OUTPUT_TARGET} ALL DEPENDS MakeParams ${PARAMS_OUTPUT} )
+        add_custom_target( ${PARAMS_OUTPUT_TARGET} ALL DEPENDS ${MAKE_PARAMS_TARGET} ${PARAMS_OUTPUT} )
 
         set( PARAMS_DEVEL_DEST ${CATKIN_DEVEL_PREFIX}/${CATKIN_GLOBAL_INCLUDE_DESTINATION}/${MODULE_PATH}/${PARAMS_PATH} )
         add_custom_command(

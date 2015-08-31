@@ -1,5 +1,5 @@
 include(AppendInternalList)
-initialize_internal_list(INSTALL_LIBRARY_LIST)
+initialize_internal_list(${PROJECT_NAME}_INSTALL_LIBRARY_LIST)
 
 # setup a 'make uninstall' target if we find a 
 # cmake_uninstall.cmake.in in the module path
@@ -40,9 +40,12 @@ macro( install_library TARGET_NAME )
           RUNTIME DESTINATION bin
   )
   
-  # maintain a list of libraries so we can avoid doing 
-  # an 'export' if the list is empty
-  append_internal_list( INSTALL_LIBRARY_LIST ${TARGET_NAME} )
+  # maintain a list of libraries so we can avoid 
+  # doing an 'export' if the list is empty
+  append_internal_list( ${PROJECT_NAME}_INSTALL_LIBRARY_LIST ${TARGET_NAME} )
+  # create a cmake variable for target. Force it 
+  # into cache to give it global scope
+  set( ${PROJECT_UPPER}_${TARGET_NAME}_LIBRARY ${TARGET_NAME} CACHE STRING "${TARGET_NAME}" FORCE )
   
   # if soversion variables have been set, set the property
   # e.g. FOO_SOVERSION = 3.0.0
@@ -85,9 +88,9 @@ endmacro( install_scripts )
 #===========================================================
 macro( install_export )
   set( DO_EXPORT FALSE )
-  if( INSTALL_LIBRARY_LIST ) 
+  if( ${PROJECT_NAME}_INSTALL_LIBRARY_LIST ) 
     set( DO_EXPORT TRUE)
-  endif( INSTALL_LIBRARY_LIST ) 
+  endif( ${PROJECT_NAME}_INSTALL_LIBRARY_LIST ) 
 
   if(DO_EXPORT)
     install( EXPORT ${PROJECT_NAME} DESTINATION lib/cmake )
