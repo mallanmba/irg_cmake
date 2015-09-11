@@ -9,7 +9,14 @@ macro( set_cfg_extras_file )
   set( ${PROJECT_NAME}_CFG_EXTRAS_FILE "${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/cmake/${PROJECT_NAME}-extras.cmake" )
 endmacro( set_cfg_extras_file ) 
 
-# append library variable names in form of PROJECT_foo_LIBRARY
+
+
+# THIS MACRO ISN'T USEFUL AS-IS
+# It was intended to add compatibility for the roversw Find
+# scripts, but catkin doesn't handle external exports in a manner
+# consistent with CMake (it does everything its own way, probably
+# because of the develspace/installspace contortion)
+# Append library variable names in form of PROJECT_foo_LIBRARY
 # to CFG_EXTRAS. 
 #===========================================================
 macro( cfg_extras_append_libraries )
