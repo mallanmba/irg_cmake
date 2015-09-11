@@ -14,10 +14,12 @@ endmacro( set_cfg_extras_file )
 #===========================================================
 macro( cfg_extras_append_libraries )
 
+  set( ${PROJECT_UPPER}_LIBRARIES "" )
   file( APPEND ${${PROJECT_NAME}_CFG_EXTRAS_FILE} "\n#-- Libraries -------\n" )
   foreach( LIB ${${PROJECT_NAME}_INSTALL_LIBRARY_LIST} )
     file( APPEND ${${PROJECT_NAME}_CFG_EXTRAS_FILE} "set( ${PROJECT_UPPER}_${LIB}_LIBRARY ${LIB} )\n" )
+    set( ${PROJECT_UPPER}_LIBRARIES ${${PROJECT_UPPER}_LIBRARIES} ${LIB} )
   endforeach()
-  file( APPEND ${${PROJECT_NAME}_CFG_EXTRAS_FILE} "\n" )
+  file( APPEND ${${PROJECT_NAME}_CFG_EXTRAS_FILE} "set( ${PROJECT_UPPER}_LIBRARIES ${${PROJECT_UPPER}_LIBRARIES} )\n\n" )
 
 endmacro( cfg_extras_append_libraries )

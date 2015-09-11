@@ -131,6 +131,13 @@ macro( miro_makeparams )
           POST_BUILD
           COMMAND ${CMAKE_COMMAND} -E copy_if_different ${PARAMS_BASE_FULL_PATH}.h ${PARAMS_DEVEL_DEST}/${PARAMS_BASE}.h
         )
+        
+        # we also want to copy the xml files into devel space so they're available for ConfigEditor
+        exec_program("${CMAKE_COMMAND}" ARGS
+          -E copy_if_different
+          "${CMAKE_CURRENT_SOURCE_DIR}/${PARAMS_FILENAME}"
+          "${CATKIN_DEVEL_PREFIX}/etc/MiroParameterDescription/${PARAMS_FILENAME}"
+        )
       endif( catkin_FOUND AND IS_SRC_MODULE )
 
       ## install source xml config
