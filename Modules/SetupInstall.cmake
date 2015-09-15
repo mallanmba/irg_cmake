@@ -43,9 +43,11 @@ macro( install_library TARGET_NAME )
   # maintain a list of libraries so we can avoid 
   # doing an 'export' if the list is empty
   append_internal_list( ${PROJECT_NAME}_INSTALL_LIBRARY_LIST ${TARGET_NAME} )
-  # create a cmake variable for target. Force it 
-  # into cache to give it global scope
-  set( ${PROJECT_UPPER}_${TARGET_NAME}_LIBRARY ${TARGET_NAME} CACHE STRING "${TARGET_NAME}" FORCE )
+  
+  ### AAARRGH doing this causes catkin tools to fail 
+  ## create a cmake variable for target. Force it 
+  ## into cache to give it global scope
+  #set( ${PROJECT_UPPER}_${TARGET_NAME}_LIBRARY ${TARGET_NAME} CACHE STRING "${TARGET_NAME}" FORCE )
   
   # if soversion variables have been set, set the property
   # e.g. FOO_SOVERSION = 3.0.0

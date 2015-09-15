@@ -33,10 +33,24 @@ macro( miro_makeparams )
   # in-source files need to see out-of-source files
   include_directories( "${CMAKE_CURRENT_BINARY_DIR}" )
 
-  string( REGEX MATCH "${CMAKE_SOURCE_DIR}/.*/src/.*" IS_SRC_MODULE ${CMAKE_CURRENT_SOURCE_DIR} )
-  # extract "module" path. Requires that directories are named ${PROJECT}/src/${MODULE}
-  string( REGEX REPLACE "${CMAKE_SOURCE_DIR}/.*/src/" "" MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}" )
+  if( CATKIN_TOPLEVEL )
+    #### Block for "catkin_make"
+    string( REGEX MATCH "${CMAKE_SOURCE_DIR}/.*/src/.*" IS_SRC_MODULE ${CMAKE_CURRENT_SOURCE_DIR} )
+    # extract "module" path. Requires that directories are named ${PROJECT}/src/${MODULE}
+    string( REGEX REPLACE "${CMAKE_SOURCE_DIR}/.*/src/" "" MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}" )
+  else( CATKIN_TOPLEVEL )
+    #### Block for "catkin build"
+    string( REGEX MATCH "${CMAKE_SOURCE_DIR}/src/.*" IS_SRC_MODULE ${CMAKE_CURRENT_SOURCE_DIR} )
+    # extract "module" path. Requires that directories are named ${PROJECT}/src/${MODULE}
+    string( REGEX REPLACE "${CMAKE_SOURCE_DIR}/src/" "" MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}" )
+  endif( CATKIN_TOPLEVEL )
 
+  #message(STATUS "#####>             catkin_FOUND=${catkin_FOUND}")
+  #message(STATUS "#####>            IS_SRC_MODULE=${IS_SRC_MODULE}")
+  #message(STATUS "#####>         CMAKE_SOURCE_DIR=${CMAKE_SOURCE_DIR}")
+  #message(STATUS "#####> CMAKE_CURRENT_SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR}")
+  #message(STATUS "#####>              MODULE_PATH=${MODULE_PATH}")
+  
   # the generated files need to reference the *_Export files,
   # so copy them to the out-of-source tree to avoid nasty
   # include path referencing mess

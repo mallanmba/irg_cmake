@@ -19,7 +19,7 @@ endmacro( find_package_if )
 ##   assert( "minimum requirements" OPENGL_FOUND AND NOT APPLE )
 ##
 ################################################# 
-if (NOT ${CATKIN_TOPLEVEL})
+if (NOT CATKIN_DEVEL_PREFIX)
 macro( assert MESSAGE )
 
   if( ${ARGN} )
@@ -36,7 +36,7 @@ macro( assert MESSAGE )
   endif( ${ARGN} )
 
 endmacro( assert )
-endif(NOT ${CATKIN_TOPLEVEL})
+endif(NOT CATKIN_DEVEL_PREFIX)
 
 ## minimum_requirements
 ##

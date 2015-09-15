@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(irg_cmake)
-
-if (${CATKIN_TOPLEVEL})
+  
+if (CATKIN_DEVEL_PREFIX)
   find_package(catkin)
-endif(${CATKIN_TOPLEVEL})
+endif(CATKIN_DEVEL_PREFIX)
 
 
 if (catkin_FOUND)
