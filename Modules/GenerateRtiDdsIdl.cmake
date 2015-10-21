@@ -57,7 +57,8 @@ macro( rtidds_wrap_idl )
   set( EXT_XML         ".xml" )
 
   set( RTIDDS_EXPORT "NDDS_USER_DLL_EXPORT" )
-  set( RTIDDS_IDL_FLAGS -language C++ -replace -namespace -convertToXml)
+  set( RTIDDS_IDL_FLAGS -language C++ -replace -namespace )
+  set( RTIDDS_XML_FLAGS -replace -namespace -convertToXml)
   if( WIN32 )
     if( EXPORT_SUFFIX )
       set(  RTIDDS_EXPORT "NDDS_USER_DLL_EXPORT_${EXPORT_SUFFIX}" )
@@ -72,7 +73,20 @@ macro( rtidds_wrap_idl )
   set( RTIDDS_IDL_GENERATED "" )
   set( RTIDDS_IDL_GENERATED_HEADERS "" )
   set( RTIDDS_IDL_GENERATED_XMLS "" )
-
+  
+  get_filename_component(IDL_COMMAND_PATH ${RTIDDS_IDL_COMMAND} DIRECTORY)
+  find_file(RTIDDS_IDL_SERVER  
+            NAMES rtiddsgen_server
+            HINTS ${IDL_COMMAND_PATH}
+            DOC "Path to RTI DDS IDL compiler (server mode)"
+  )
+  set(_RTIDDS_IDL_COMMAND ${RTIDDS_IDL_COMMAND})
+  if(RTIDDS_IDL_SERVER)
+    message(STATUS "Found ${RTIDDS_IDL_SERVER}: will use that instead, to speed up build")
+    set(_RTIDDS_IDL_COMMAND ${RTIDDS_IDL_SERVER})
+  endif(RTIDDS_IDL_SERVER)
+  
+  
   # add a custom command set for idl files
   #-----------------------------------------------------
   foreach( IDL_FILENAME ${ARGN} )
@@ -134,22 +148,39 @@ macro( rtidds_wrap_idl )
     endif (DEBUG_IDL_DEPENDENCIES)
 
 
-    #message( STATUS "COMMAND = ${EXTRA_ENVIRONMENT} ${RTIDDS_IDL_COMMAND}" )
+    #message( STATUS "COMMAND = ${EXTRA_ENVIRONMENT} ${_RTIDDS_IDL_COMMAND}" )
     #message( STATUS "   ARGS = ${RTIDDS_IDL_FLAGS} ${EXTRA_RTIDDS_IDL_ARGS}" )
     #message( STATUS "          -I${SRCDIR} ${RTIDDS_IDL_INCLUDES} " )
     #message( STATUS "          -d ${OOSDIR} ${SRCDIR}/${IDL_BASE}.idl" )
     
     # setup the command
+    # RTI DDS 5.2 IDL compiler will no longer generate c++ and xml 
+    # with the same invocation of rtiddsgen, so we have to run it twice. 
     #-----------------------------------------------------
-    add_custom_command(
-      OUTPUT   ${IDL_OUTPUT_FILES}
-      DEPENDS  ${DEPEND_FILE_LIST}
-      COMMAND  ${EXTRA_ENVIRONMENT} ${RTIDDS_IDL_COMMAND}
-      ARGS ${RTIDDS_IDL_FLAGS} ${EXTRA_RTIDDS_IDL_ARGS}
-          -I${SRCDIR} ${RTIDDS_IDL_INCLUDES} 
-          -d ${OOSDIR} ${SRCDIR}/${IDL_BASE}.idl
-    )
-    
+    if(RTIDDS_VERSION VERSION_LESS 5.2.0)
+       add_custom_command(
+        OUTPUT   ${IDL_OUTPUT_FILES}
+        DEPENDS  ${DEPEND_FILE_LIST}
+        COMMAND  ${EXTRA_ENVIRONMENT} ${_RTIDDS_IDL_COMMAND}
+        ARGS ${RTIDDS_IDL_FLAGS} ${EXTRA_RTIDDS_IDL_ARGS} -convertToXml
+            -I${SRCDIR} ${RTIDDS_IDL_INCLUDES} 
+            -d ${OOSDIR} ${SRCDIR}/${IDL_BASE}.idl
+      )
+    else(RTIDDS_VERSION VERSION_LESS 5.2.0)
+      add_custom_command(
+        OUTPUT   ${IDL_OUTPUT_FILES}
+        DEPENDS  ${DEPEND_FILE_LIST}
+        COMMAND  ${EXTRA_ENVIRONMENT} ${_RTIDDS_IDL_COMMAND}
+        ARGS ${RTIDDS_IDL_FLAGS} ${EXTRA_RTIDDS_IDL_ARGS}
+            -I${SRCDIR} ${RTIDDS_IDL_INCLUDES} 
+            -d ${OOSDIR} ${SRCDIR}/${IDL_BASE}.idl
+        COMMAND  ${EXTRA_ENVIRONMENT} ${_RTIDDS_IDL_COMMAND}
+        ARGS ${RTIDDS_XML_FLAGS} ${EXTRA_RTIDDS_IDL_ARGS}
+            -I${SRCDIR} ${RTIDDS_IDL_INCLUDES} 
+            -d ${OOSDIR} ${SRCDIR}/${IDL_BASE}.idl
+      )
+    endif(RTIDDS_VERSION VERSION_LESS 5.2.0)
+        
     set( RTIDDS_IDL_GENERATED_HEADERS 
       ${IDL_OUTPUT_HEADERS}
       ${RTIDDS_IDL_GENERATED_HEADERS}
