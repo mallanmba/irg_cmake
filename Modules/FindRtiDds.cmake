@@ -363,3 +363,13 @@ else( RTIDDS_IDL_COMMAND )
 endif( RTIDDS_IDL_COMMAND )
 
 message(STATUS "RTIDDS_nddscpp_LIBRARY = ${RTIDDS_nddscpp_LIBRARY}" )
+
+########################
+## RTI generated code generates lots of 
+## deprecated conversion from string constant to rapid::String64 {aka char*}
+## warnings, so disable it
+if(CMAKE_COMPILER_IS_GNUCXX)
+  if( NOT CMAKE_CXX_FLAGS MATCHES "(Wno-write-strings)+" )
+    set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-write-strings" CACHE STRING "" FORCE )
+  endif( NOT CMAKE_CXX_FLAGS MATCHES "(Wno-write-strings)+" )
+endif(CMAKE_COMPILER_IS_GNUCXX)
