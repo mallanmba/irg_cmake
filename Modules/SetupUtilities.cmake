@@ -122,10 +122,10 @@ endmacro( set_unless_env  )
 ## end create it
 #################################################
 macro( doxygen_set_working_dir )
-
+if (NOT CATKIN_DEVEL_PREFIX)  
   set( DOXYGEN_WORKING_DIR ${CMAKE_INSTALL_PREFIX}/doc/${CMAKE_PROJECT_NAME} )
   file( MAKE_DIRECTORY ${DOXYGEN_WORKING_DIR} )
-  
+endif (NOT CATKIN_DEVEL_PREFIX)  
 endmacro( doxygen_set_working_dir )
 
 ## Create a list of tagfiles for external 
@@ -139,7 +139,7 @@ endmacro( doxygen_set_working_dir )
 ## string with backslashes and indentation
 #################################################
 macro( doxygen_create_tagfile_list )
-  
+if (NOT CATKIN_DEVEL_PREFIX)  
   set( TMP_TAGFILES "" )
   foreach( ARG ${ARGN} )
     set( TMP_TAGFILES ${TMP_TAGFILES} "${CMAKE_INSTALL_PREFIX}/doc/${ARG}/${ARG}.tag=${CMAKE_INSTALL_PREFIX}/doc/${ARG}/html" )
@@ -150,14 +150,14 @@ macro( doxygen_create_tagfile_list )
     set( DOXYGEN_TAGFILES "${DOXYGEN_TAGFILES} \\
                          ${TAGFILE_}" )
   endforeach( TAGFILE_ )
-
+endif (NOT CATKIN_DEVEL_PREFIX)  
 endmacro( doxygen_create_tagfile_list )
 
 ## Create a list directories to exclude
 ## from processing
 #################################################
 macro( doxygen_create_exclude_list )
-  
+if (NOT CATKIN_DEVEL_PREFIX)  
   set( TMP_EXCLUDES "" )
   foreach( ARG ${ARGN} )
     set( TMP_EXCLUDES ${TMP_EXCLUDES} ${ARG} )
@@ -168,7 +168,7 @@ macro( doxygen_create_exclude_list )
     set( DOXYGEN_EXCLUDE "${DOXYGEN_EXCLUDE} \\
                          ${EXCLUDE_}" )
   endforeach( EXCLUDE_ )
-
+endif (NOT CATKIN_DEVEL_PREFIX)  
 endmacro( doxygen_create_exclude_list )
 
 ## create the make doc target
@@ -176,7 +176,7 @@ endmacro( doxygen_create_exclude_list )
 ## and creates documentation in DOXYGEN_WORKING_DIR
 #################################################
 macro( doxygen_create_doc_target )
-
+if (NOT CATKIN_DEVEL_PREFIX)  
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${DOXYGEN_WORKING_DIR}/Doxyfile @ONLY)
   
   add_custom_target(${PROJECT_NAME}_doc
@@ -193,7 +193,7 @@ macro( doxygen_create_doc_target )
 
   # add local doc target to doc target dependency
   add_dependencies(doc ${PROJECT_NAME}_doc)
-
+endif (NOT CATKIN_DEVEL_PREFIX)  
 endmacro( doxygen_create_doc_target )
 
 
