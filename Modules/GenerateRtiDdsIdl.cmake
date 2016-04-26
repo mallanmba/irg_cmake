@@ -74,18 +74,21 @@ macro( rtidds_wrap_idl )
   set( RTIDDS_IDL_GENERATED_HEADERS "" )
   set( RTIDDS_IDL_GENERATED_XMLS "" )
   
-  get_filename_component(IDL_COMMAND_PATH ${RTIDDS_IDL_COMMAND} DIRECTORY)
-  find_file(RTIDDS_IDL_SERVER  
-            NAMES rtiddsgen_server
-            HINTS ${IDL_COMMAND_PATH}
-            DOC "Path to RTI DDS IDL compiler (server mode)"
-  )
-  set(_RTIDDS_IDL_COMMAND ${RTIDDS_IDL_COMMAND})
-  if(RTIDDS_IDL_SERVER)
-    message(STATUS "Found ${RTIDDS_IDL_SERVER}: will use that instead, to speed up build")
-    set(_RTIDDS_IDL_COMMAND ${RTIDDS_IDL_SERVER})
-  endif(RTIDDS_IDL_SERVER)
-  
+  # mallan 4/26/2016: disable use of rtiddsgen_server for now because
+  # it fails on parallel builds with the following error:
+  # java.net.BindException: Address already in use
+  # a ticket has been filed; hopefully they'll fit it soon
+  #get_filename_component(IDL_COMMAND_PATH ${RTIDDS_IDL_COMMAND} DIRECTORY)
+  #find_file(RTIDDS_IDL_SERVER  
+  #          NAMES rtiddsgen_server
+  #          HINTS ${IDL_COMMAND_PATH}
+  #          DOC "Path to RTI DDS IDL compiler (server mode)"
+  #)
+  #set(_RTIDDS_IDL_COMMAND ${RTIDDS_IDL_COMMAND})
+  #if(RTIDDS_IDL_SERVER)
+  #  message(STATUS "Found ${RTIDDS_IDL_SERVER}: will use that instead, to speed up build")
+  #  set(_RTIDDS_IDL_COMMAND ${RTIDDS_IDL_SERVER})
+  #endif(RTIDDS_IDL_SERVER)
   
   # add a custom command set for idl files
   #-----------------------------------------------------
