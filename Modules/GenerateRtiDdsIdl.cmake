@@ -78,13 +78,13 @@ macro( rtidds_wrap_idl )
   # it fails on parallel builds with the following error:
   # java.net.BindException: Address already in use
   # a ticket has been filed; hopefully they'll fit it soon
-  #get_filename_component(IDL_COMMAND_PATH ${RTIDDS_IDL_COMMAND} DIRECTORY)
-  #find_file(RTIDDS_IDL_SERVER  
-  #          NAMES rtiddsgen_server
-  #          HINTS ${IDL_COMMAND_PATH}
-  #          DOC "Path to RTI DDS IDL compiler (server mode)"
-  #)
-  #set(_RTIDDS_IDL_COMMAND ${RTIDDS_IDL_COMMAND})
+  get_filename_component(IDL_COMMAND_PATH ${RTIDDS_IDL_COMMAND} DIRECTORY)
+  find_file(RTIDDS_IDL_SERVER  
+            NAMES rtiddsgen_server
+            HINTS ${IDL_COMMAND_PATH}
+            DOC "Path to RTI DDS IDL compiler (server mode)"
+  )
+  set(_RTIDDS_IDL_COMMAND ${RTIDDS_IDL_COMMAND})
   #if(RTIDDS_IDL_SERVER)
   #  message(STATUS "Found ${RTIDDS_IDL_SERVER}: will use that instead, to speed up build")
   #  set(_RTIDDS_IDL_COMMAND ${RTIDDS_IDL_SERVER})
