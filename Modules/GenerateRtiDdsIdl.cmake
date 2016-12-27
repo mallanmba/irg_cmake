@@ -202,10 +202,10 @@ macro( rtidds_wrap_idl )
     ## copy header to devel/include if we are using catkin
     ## and header is under ${PROJECT}/src/...
     ##---------------------------------------------------
-    string( REGEX MATCH "${CMAKE_SOURCE_DIR}/.*/src/.*" IS_SRC_MODULE ${CMAKE_CURRENT_SOURCE_DIR} )
+    string( REGEX MATCH "${CMAKE_SOURCE_DIR}.*/src/.*" IS_SRC_MODULE ${CMAKE_CURRENT_SOURCE_DIR} )
     if(catkin_FOUND AND IS_SRC_MODULE )
       # extract "module" path. Requires that directories are named ${PROJECT}/src/${MODULE}
-      string( REGEX REPLACE "${CMAKE_SOURCE_DIR}/.*/src/" "" MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}" )
+      string( REGEX REPLACE "${CMAKE_SOURCE_DIR}.*/src/" "" MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}" )
 
       set( RTIDDSIDL_OUTPUT_TARGET RtiDdsIdl_${IDL_BASE} )
       add_custom_target( ${RTIDDSIDL_OUTPUT_TARGET} ALL DEPENDS ${IDL_OUTPUT_FILES} )
