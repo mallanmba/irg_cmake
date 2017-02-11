@@ -26,6 +26,7 @@ if(EXISTS "${OpenCVConfig_FILE}")
     endif(CMAKE_VERSION VERSION_GREATER 2.8.4)
     find_library( OPENCV_CORE_LIB opencv_core
                   HINTS ${OpenCV_INSTALL_PATH}/lib
+                        ${OpenCV_INSTALL_PATH}/lib/x86_64-linux-gnu
                         ${OpenCV_INSTALL_PATH}/${CMAKE_INSTALL_LIBDIR}
                   NO_DEFAULT_PATH )
     string(REGEX REPLACE "/[^/]*$" "" OpenCV_LIB_DIR ${OPENCV_CORE_LIB})
