@@ -138,75 +138,93 @@ message(STATUS "  RTIDDS_IDL_COMMAND = ${RTIDDS_IDL_COMMAND}")
 ###################################################
 if( RTIDDS_IDL_COMMAND )
 
-  string(REGEX REPLACE "/[^/]*/[^/]*$" "" _RTIDDS_ROOT_DIR ${RTIDDS_IDL_COMMAND})
-  # resolve any symlinks
-  get_filename_component(RTIDDS_ROOT_DIR ${_RTIDDS_ROOT_DIR} REALPATH)
-  set( NDDSHOME ${RTIDDS_ROOT_DIR} )
-  
-  set( ENV_NDDSARCH $ENV{NDDSARCH} )
-  # guess the rti architecture string
-  # this is absolutely horrible... even in their own 
-  # scripts they have a fragile way to guess their
-  # architecture string. So, we do our best...
-  #--------------------------------------------------
-  if( ENV_NDDSARCH ) 
-    message( STATUS "  NDDSARCH environment variable is set to \"${ENV_NDDSARCH}\"" )
-    set(RTIDDS_ARCHITECTURE ${ENV_NDDSARCH})
-  else( $ENV{NDDSARCH} )
-    message( STATUS "  NDDSARCH environment variable is NOT set. Will try to guess architecture string..." )
-    set(RTIDDS_ARCHITECTURE "INVALID" ) # default value
-    ## CPU
-    if( ${ARCH_CPU} STREQUAL "i386" OR ${ARCH_CPU} STREQUAL "i586" OR ${ARCH_CPU} STREQUAL "i686" OR ${ARCH_CPU} STREQUAL "x86" )
-      set( RTI_CPU "i86" )
-    endif( ${ARCH_CPU} STREQUAL "i386" OR ${ARCH_CPU} STREQUAL "i586" OR ${ARCH_CPU} STREQUAL "i686" OR ${ARCH_CPU} STREQUAL "x86" )
-    if( ${ARCH_CPU} STREQUAL "x86_64" )
-      set( RTI_CPU "x64" )
-    endif( ${ARCH_CPU} STREQUAL "x86_64" )
-    ## OS and Compiler
-    if( ${ARCH_OS} STREQUAL "linux" )
-      set( RTI_OS "Linux" )
-    endif( ${ARCH_OS} STREQUAL "linux" )
-    if( ${ARCH_OS} STREQUAL "windows" )
-      set( RTI_OS "Win32" )
-    endif( ${ARCH_OS} STREQUAL "windows" )
-    if( ${ARCH_OS} STREQUAL "darwin" )
-      set( RTI_OS "darwin" )
-      # on OSX, "uname -p" returns i386, even though it's a 64 bit platform. Sweeeet. Think different, indeed! 
-      # So, we force it to x64 and be done with it because 32 bit is dead. 
-      set( RTI_CPU "x64" )
-    endif( ${ARCH_OS} STREQUAL "darwin" )
-    ## Compiler - look for subdirs in lib that start with proper cpu and os
-    file( GLOB RTILIB_SUBDIRS ${RTIDDS_ROOT_DIR}/lib/${RTI_CPU}${RTI_OS}* )
-    foreach( SUBDIR ${RTILIB_SUBDIRS} )
-      if( NOT ${SUBDIR} MATCHES "jdk$" ) # we don't want the JDK dir
-        set( RTILIB_SUBDIR ${SUBDIR} )
-      endif( NOT ${SUBDIR} MATCHES "jdk$" )
-    endforeach( SUBDIR ${RTILIB_SUBDIRS} )
-    if( NOT RTILIB_SUBDIR ) 
-      file( GLOB RTILIB_SUBDIR_CONTENTS ${RTIDDS_ROOT_DIR}/lib/* )
-      message(STATUS "  ERROR!! The script cannot determine the RTI architecture string.")
-      message(STATUS "  ERROR!! This may indicate that you have a mismatch between your machine architecture and the installed RTI libraries.")
-      message(STATUS "    FindRtiDds.cmake DEBUG INFORMATION:")
-      message(STATUS "          RTIDDS_ROOT_DIR=${RTIDDS_ROOT_DIR}")
-      message(STATUS "           RTILIB_SUBDIRS=${RTILIB_SUBDIRS}")
-      message(STATUS "            RTILIB_SUBDIR=${RTILIB_SUBDIR}")
-      message(STATUS "                 ARCH_CPU=${ARCH_CPU}")
-      message(STATUS "                  RTI_CPU=${RTI_CPU} (expected)")
-      message(STATUS "                  ARCH_OS=${ARCH_OS}")
-      message(STATUS "                   RTI_OS=${RTI_OS} (expected)")
-      message(STATUS "          contents of ${RTIDDS_ROOT_DIR}/lib/:")
-      message(STATUS "              ${RTILIB_SUBDIR_CONTENTS}")
-      message(STATUS "")
-      message(STATUS "  ...the next command WILL FAIL: ")
-      message(STATUS "")
-    endif( NOT RTILIB_SUBDIR )
-    string(REGEX MATCH "[^/]*$" RTIDDS_ARCHITECTURE ${RTILIB_SUBDIR})    
-  endif( ENV_NDDSARCH )
+  # Do an overly simple check to determine whether
+  # connnext was installed by OSRF deb file
+  if(RTIDDS_IDL_COMMAND STREQUAL "/usr/bin/${IDL_COMMAND_FILENAME}" )
+    set( RTIDDS_OSRF_DEB TRUE )
+  endif()
 
-  message( STATUS "  Using \"${RTIDDS_ARCHITECTURE}\" for RTI architecture string" )
+  if( RTIDDS_DEB_INSTALL )
   
-  set( RTIDDS_INCLUDE_DIR  ${RTIDDS_ROOT_DIR}/include ${RTIDDS_ROOT_DIR}/include/ndds )
-  set( RTIDDS_LIBRARY_DIR  ${RTIDDS_ROOT_DIR}/lib/${RTIDDS_ARCHITECTURE} )
+    message(STATUS "  Assuming RTI Connect DDS was installed via deb")
+    set( RTIDDS_ROOT_DIR "/usr" )
+    set( NDDSHOME ${RTIDDS_ROOT_DIR} )
+    set( RTIDDS_INCLUDE_DIR  ${RTIDDS_ROOT_DIR}/include ${RTIDDS_ROOT_DIR}/include/ndds )
+    set( RTIDDS_LIBRARY_DIR  ${RTIDDS_ROOT_DIR}/lib )
+    
+  else( RTIDDS_DEB_INSTALL )
+  
+    string(REGEX REPLACE "/[^/]*/[^/]*$" "" _RTIDDS_ROOT_DIR ${RTIDDS_IDL_COMMAND})
+    # resolve any symlinks
+    get_filename_component(RTIDDS_ROOT_DIR ${_RTIDDS_ROOT_DIR} REALPATH)
+    set( NDDSHOME ${RTIDDS_ROOT_DIR} )
+    
+    set( ENV_NDDSARCH $ENV{NDDSARCH} )
+    # guess the rti architecture string
+    # this is absolutely horrible... even in their own 
+    # scripts they have a fragile way to guess their
+    # architecture string. So, we do our best...
+    #--------------------------------------------------
+    if( ENV_NDDSARCH ) 
+      message( STATUS "  NDDSARCH environment variable is set to \"${ENV_NDDSARCH}\"" )
+      set(RTIDDS_ARCHITECTURE ${ENV_NDDSARCH})
+    else( $ENV{NDDSARCH} )
+      message( STATUS "  NDDSARCH environment variable is NOT set. Will try to guess architecture string..." )
+      set(RTIDDS_ARCHITECTURE "INVALID" ) # default value
+      ## CPU
+      if( ${ARCH_CPU} STREQUAL "i386" OR ${ARCH_CPU} STREQUAL "i586" OR ${ARCH_CPU} STREQUAL "i686" OR ${ARCH_CPU} STREQUAL "x86" )
+        set( RTI_CPU "i86" )
+      endif( ${ARCH_CPU} STREQUAL "i386" OR ${ARCH_CPU} STREQUAL "i586" OR ${ARCH_CPU} STREQUAL "i686" OR ${ARCH_CPU} STREQUAL "x86" )
+      if( ${ARCH_CPU} STREQUAL "x86_64" )
+        set( RTI_CPU "x64" )
+      endif( ${ARCH_CPU} STREQUAL "x86_64" )
+      ## OS and Compiler
+      if( ${ARCH_OS} STREQUAL "linux" )
+        set( RTI_OS "Linux" )
+      endif( ${ARCH_OS} STREQUAL "linux" )
+      if( ${ARCH_OS} STREQUAL "windows" )
+        set( RTI_OS "Win32" )
+      endif( ${ARCH_OS} STREQUAL "windows" )
+      if( ${ARCH_OS} STREQUAL "darwin" )
+        set( RTI_OS "darwin" )
+        # on OSX, "uname -p" returns i386, even though it's a 64 bit platform. Sweeeet. Think different, indeed! 
+        # So, we force it to x64 and be done with it because 32 bit is dead. 
+        set( RTI_CPU "x64" )
+      endif( ${ARCH_OS} STREQUAL "darwin" )
+      ## Compiler - look for subdirs in lib that start with proper cpu and os
+      file( GLOB RTILIB_SUBDIRS ${RTIDDS_ROOT_DIR}/lib/${RTI_CPU}${RTI_OS}* )
+      foreach( SUBDIR ${RTILIB_SUBDIRS} )
+        if( NOT ${SUBDIR} MATCHES "jdk$" ) # we don't want the JDK dir
+          set( RTILIB_SUBDIR ${SUBDIR} )
+        endif( NOT ${SUBDIR} MATCHES "jdk$" )
+      endforeach( SUBDIR ${RTILIB_SUBDIRS} )
+      if( NOT RTILIB_SUBDIR ) 
+        file( GLOB RTILIB_SUBDIR_CONTENTS ${RTIDDS_ROOT_DIR}/lib/* )
+        message(STATUS "  ERROR!! The script cannot determine the RTI architecture string.")
+        message(STATUS "  ERROR!! This may indicate that you have a mismatch between your machine architecture and the installed RTI libraries.")
+        message(STATUS "    FindRtiDds.cmake DEBUG INFORMATION:")
+        message(STATUS "          RTIDDS_ROOT_DIR=${RTIDDS_ROOT_DIR}")
+        message(STATUS "           RTILIB_SUBDIRS=${RTILIB_SUBDIRS}")
+        message(STATUS "            RTILIB_SUBDIR=${RTILIB_SUBDIR}")
+        message(STATUS "                 ARCH_CPU=${ARCH_CPU}")
+        message(STATUS "                  RTI_CPU=${RTI_CPU} (expected)")
+        message(STATUS "                  ARCH_OS=${ARCH_OS}")
+        message(STATUS "                   RTI_OS=${RTI_OS} (expected)")
+        message(STATUS "          contents of ${RTIDDS_ROOT_DIR}/lib/:")
+        message(STATUS "              ${RTILIB_SUBDIR_CONTENTS}")
+        message(STATUS "")
+        message(STATUS "  ...the next command WILL FAIL: ")
+        message(STATUS "")
+      endif( NOT RTILIB_SUBDIR )
+      string(REGEX MATCH "[^/]*$" RTIDDS_ARCHITECTURE ${RTILIB_SUBDIR})    
+    endif( ENV_NDDSARCH )
+
+    message( STATUS "  Using \"${RTIDDS_ARCHITECTURE}\" for RTI architecture string" )
+    
+    set( RTIDDS_INCLUDE_DIR  ${RTIDDS_ROOT_DIR}/include ${RTIDDS_ROOT_DIR}/include/ndds )
+    set( RTIDDS_LIBRARY_DIR  ${RTIDDS_ROOT_DIR}/lib/${RTIDDS_ARCHITECTURE} )
+    
+  endif( RTIDDS_DEB_INSTALL )
   
   # find full paths to all the libraries
   #--------------------------------------------------
