@@ -132,6 +132,7 @@ find_file(RTIDDS_IDL_COMMAND  ${IDL_COMMAND_FILENAME}
   DOC "Path to RTI DDS IDL compiler"
 )
 message(STATUS "  RTIDDS_IDL_COMMAND = ${RTIDDS_IDL_COMMAND}")
+message(STATUS "                     = /usr/bin/${IDL_COMMAND_FILENAME}")
 
 ###################################################
 ## If IDL compiler was found, we can proceed
