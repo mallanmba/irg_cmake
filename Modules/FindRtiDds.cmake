@@ -142,7 +142,7 @@ if( RTIDDS_IDL_COMMAND )
   # Do an overly simple check to determine whether
   # connnext was installed by OSRF deb file
   if(RTIDDS_IDL_COMMAND STREQUAL "/usr/bin/${IDL_COMMAND_FILENAME}" )
-    set( RTIDDS_OSRF_DEB TRUE )
+    set( RTIDDS_DEB_INSTALL TRUE )
   endif()
 
   if( RTIDDS_DEB_INSTALL )
@@ -234,7 +234,11 @@ if( RTIDDS_IDL_COMMAND )
     nddscore
     nddscpp
   )
-  get_library_list(RTIDDS ${RTIDDS_LIBRARY_DIR} "d" "${RTIDDS_LIBRARY_NAMES}" TRUE)
+  if( RTIDDS_DEB_INSTALL ) 
+    get_library_list(RTIDDS ${RTIDDS_LIBRARY_DIR} "d" "${RTIDDS_LIBRARY_NAMES}" FALSE)
+  else( RTIDDS_DEB_INSTALL ) 
+    get_library_list(RTIDDS ${RTIDDS_LIBRARY_DIR} "d" "${RTIDDS_LIBRARY_NAMES}" TRUE)
+  endif( RTIDDS_DEB_INSTALL ) 
   
   # Find NDDS version by looking at ndds_version.h
   #--------------------------------------------------
