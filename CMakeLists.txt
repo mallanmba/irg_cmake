@@ -1,20 +1,6 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.5)
 project(irg_cmake)
+
+find_package(ament_cmake REQUIRED)
   
-if (CATKIN_DEVEL_PREFIX)
-  find_package(catkin)
-endif(CATKIN_DEVEL_PREFIX)
-
-
-if (catkin_FOUND)
-  ###################################
-  ## catkin specific configuration ##
-  ###################################
-  catkin_package(
-    CFG_EXTRAS irg_cmake-extras.cmake
-  )
-
-  install(DIRECTORY Modules
-    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/${PROJECT_NAME}
-  )
-endif (catkin_FOUND)
+ament_package(CONFIG_EXTRAS "cmake/irg_cmake-extras.cmake.in")
